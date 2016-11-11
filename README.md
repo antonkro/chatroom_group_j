@@ -1,7 +1,7 @@
-# discover-iot-sample
+# chatroom_group_j
 
-Sample application for connecting a smartphone to IBM IBM Watson IoT Platform.
+chatroom application in course of the module  cloud computing excercise 
 
-(https://discover-iot.mybluemix.net)
+(https://chatroom-group-j.mybluemix.net/)
 
 [![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/matthiaskubik/discover-iot-sample)
