@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "chat room basic structure",
   "dependencies": {
+    "connect-datacache": "^1.1.0",
     "crypto": "0.0.3",
     "dateformat": "^1.0.12",
     "ejs": "^2.5.2",
