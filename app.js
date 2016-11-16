@@ -6,42 +6,34 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var session = require('express-session');
 var DataCacheStore = require('connect-datacache')(session)
-var ip = require("ip");
+// var ip = require("ip");
 
 var dateFormat = require('dateformat');
 var now = new Date();
 var path = require('path');// To make the uploads folder accessible
 var uploadname = new String();
 
-  var credentials= {
-                "catalogEndPoint": "23.246.238.90:2809,23.246.238.91:2809",
-                "restResource": "http://23.246.238.90/resources/datacaches/EzsLGyQDTwCz9ohzGMEscwAP",
-                "restResourceSecure": "https://ecaas74.ng.bluemix.net/resources/datacaches/EzsLGyQDTwCz9ohzGMEscwAP",
-                "gridName": "EzsLGyQDTwCz9ohzGMEscwAP",
-                "username": "AFpC2U8ORx65dzvMSaXFAgBI",
-                "password": "uxpQvHJ6SBFkkzdr2utBVwWA"
-            };
+var credentials = {
+  "catalogEndPoint": "23.246.238.90:2809,23.246.238.91:2809",
+  "restResource": "http://23.246.238.90/resources/datacaches/EzsLGyQDTwCz9ohzGMEscwAP",
+  "restResourceSecure": "https://ecaas74.ng.bluemix.net/resources/datacaches/EzsLGyQDTwCz9ohzGMEscwAP",
+  "gridName": "EzsLGyQDTwCz9ohzGMEscwAP",
+  "username": "AFpC2U8ORx65dzvMSaXFAgBI",
+  "password": "uxpQvHJ6SBFkkzdr2utBVwWA"
+};
 
 var store = new DataCacheStore({
-        // required parameters when no custom client provided or no ENV credentials are set 
-        restResource: 'http://dcsdomain.bluemix.net/resources/datacaches/{gridName}',
-        restResourceSecure: 'https://dcsdomain.bluemix.net/resources/datacaches/{gridName}',
-        gridName:credentials.gridName,
-        username: credentials.username,
-        password: credentials.password
-        // // optional parameters - default values 
-        // mapName: '{gridName}',
-        // eviction: 'LUT',
-        // locking: 'optimistic',
-        // contentType: 'application/json',
-        // secure: true,
-        // ttl: 3600,
-        // prefix: 'sess:',
-        // cfServiceName: null,
-        // client: null
-    }
-);
+  // required parameters when no custom client provided or no ENV credentials are set 
+  restResource: 'http://dcsdomain.bluemix.net/resources/datacaches/{gridName}',
+  restResourceSecure: 'https://dcsdomain.bluemix.net/resources/datacaches/{gridName}',
+  gridName: credentials.gridName,
+  username: credentials.username,
+  password: credentials.password
 
+}
+);
+var port = (process.env.VCAP_APP_PORT || 3000);
+var host = (process.env.VCAP_APP_HOST || 'localhost');
 
 app.use(express.static(path.join(__dirname, 'uploads')));
 
@@ -66,11 +58,11 @@ app.set('views', __dirname + '/views');
 
 // use middleware ======================================================================
 dcStore = null;
-try { 
-    // by default is looking into bluemix cfenv services 
-    dcStore = new DataCacheStore(store);
+try {
+  // by default is looking into bluemix cfenv services 
+  dcStore = new DataCacheStore(store);
 } catch (err) {
-    // log fallback on memory store for no DataCache service linked to app 
+  // log fallback on memory store for no DataCache service linked to app 
 }
 var session = require('express-session');
 var DataCacheStore = require('connect-datacache')(session)
@@ -106,9 +98,9 @@ io.on('connection', function (socket) {
     if (uploadname != "") {
       var inner = socket.username + " at " + dateFormat(now) + ': ';
       // console.dir(ip.address());
-      msg = "http://" + (ip.address() + ':3000/' + uploadname);
+      msg = "http://" + (host+ ':3000/' + uploadname);
       io.emit('upload', msg, inner);
-      uploadname="";
+      uploadname = "";
     }
   });
   socket.on('message', function (msg) {
@@ -136,16 +128,16 @@ io.on('connection', function (socket) {
     }
   });
 
-  socket.on('add user', function (username,chatroom) {
+  socket.on('add user', function (username, chatroom) {
     socket.username = username;
-    socket.chatroom=chatroom;
+    socket.chatroom = chatroom;
     socket.join(chatroom);
     app.emit('addUserToList', socket, io);
     io.sockets.in(socket.chatroom).emit('message', username + "  joined the Chat!!!");
   });
 
   socket.on('disconnect', function () {
-   app.emit('deleteUserFromList', socket);
+    app.emit('deleteUserFromList', socket);
   });
 
 });
@@ -153,10 +145,10 @@ io.on('connection', function (socket) {
 
 
 // HTTP ======================================================================
-http.listen(3000, function (req, res) {
- 
-//  setInterval(function() { sessionCleanup() }, 1000);
-  console.log('listening on *:3000');
+http.listen(port, host,function (req, res) {
+
+  //  setInterval(function() { sessionCleanup() }, 1000);
+  console.log('listening on *:'+port);
 });
 
 // function sessionCleanup() {
