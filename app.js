@@ -28,7 +28,9 @@ var store = new DataCacheStore({
   restResourceSecure: 'https://dcsdomain.bluemix.net/resources/datacaches/{gridName}',
   gridName: credentials.gridName,
   username: credentials.username,
-  password: credentials.password
+  password: credentials.password,
+  //optional
+  contentType: 'other'
 
 }
 );
