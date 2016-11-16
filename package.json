@@ -9,6 +9,7 @@
     "express": "^4.10.2",
     "express-session": "^1.14.1",
     "formidable": "^1.0.17",
+    "ip": "^1.1.4",
     "multer": "^1.2.0",
     "nedb": "^1.8.0",
     "socket.io": "^1.5.0",
