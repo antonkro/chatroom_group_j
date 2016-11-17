@@ -91,7 +91,7 @@ require(__dirname + '/events.js')(app);
 // socket.io ======================================================================
 io.on('connection', function (socket) {
   // upload on post
-  app.post('/api/photo', function (req, res) {
+  app.post('/api/upload', function (req, res) {
     upload(req, res, function (err) {
       if (err) {
         return res.end("Error uploading file.");

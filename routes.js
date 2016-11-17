@@ -42,9 +42,6 @@ module.exports = function (app) {
     app.post('/login', function (req, res) {
         app.emit('authentication', req, res);
     })
-
-
-
 }
 function requiredAuthentication(req, res, next) {
     if (req.session.user) {
