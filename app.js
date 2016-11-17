@@ -40,6 +40,7 @@ var port = (process.env.VCAP_APP_PORT || 3000);
 var host = (process.env.VCAP_APP_HOST || 'localhost');
 
 app.use(express.static(path.join(__dirname, 'uploads')));
+app.use(express.static(__dirname + '/views/ressources'));
 
 // Storage ======================================================================
 // upload format like name of file
