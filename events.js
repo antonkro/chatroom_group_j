@@ -59,11 +59,11 @@ module.exports = function (app) {
                             if (docCR) {
                                 var passwordDataCR = helpers.saltHashPassword(fields.crpassword, docCR.salt);
                                 if (passwordDataCR.passwordHash == docCR.pw) {
-                                    req.session.regenerate(function () {
+                                    // req.session.regenerate(function () {
                                         req.session.user = fields.username;
                                         req.session.chatroom = fields.chatroom;
                                         res.redirect('/chatroom');
-                                    });
+                                    // });
                                 }else{
                                     app.emit('renderLogin',req,res,' Chatroom password invalid!');
                                 }
@@ -148,7 +148,7 @@ module.exports = function (app) {
 
     app.on('listAllUsers', function (socket) {
         active.find({chatroom:socket.chatroom}, function (err, docs) {
-           console.log(docs)
+        //    console.log(docs)
             for (i in docs) {
                 socket.emit('message', docs[i].onlineUser);
             }

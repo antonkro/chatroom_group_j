@@ -1,2 +1,5 @@
-{"onlineUser":"test","sessionId":"nNXFA8T-un4qKGNdAAAC","chatroom":"chat3","_id":"q2fskdaWuiGKcuLj"}
+{"onlineUser":"123","sessionId":"0EeCj8T6M2_tDNYGAAAA","chatroom":"chat2","_id":"fKZrj5TxxSBSNH7v"}
+{"onlineUser":"test","sessionId":"HxWoL6LsS8Exah9oAAAB","chatroom":"chat2","_id":"q2fskdaWuiGKcuLj"}
 {"$$indexCreated":{"fieldName":"onlineUser","unique":true,"sparse":false}}
+{"onlineUser":"321","sessionId":"RRIAsGcsi5Cp2RI3AAAC","chatroom":"chat1","_id":"dcWDecS3QzqOFUTX"}
+{"$$deleted":true,"_id":"dcWDecS3QzqOFUTX"}

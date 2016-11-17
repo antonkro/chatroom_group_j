@@ -4,8 +4,9 @@ var multer = require('multer');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var session = require('express-session');
-var DataCacheStore = require('connect-datacache')(session)
+// var session = require('express-session');
+// var DataCacheStore = require('connect-datacache')(session)
+var session = require('cookie-session')
 // var ip = require("ip");
 
 var dateFormat = require('dateformat');
@@ -13,27 +14,27 @@ var now = new Date();
 var path = require('path');// To make the uploads folder accessible
 var uploadname = new String();
 
-var credentials = {
-  "catalogEndPoint": "23.246.238.90:2809,23.246.238.91:2809",
-  "restResource": "http://23.246.238.90/resources/datacaches/EzsLGyQDTwCz9ohzGMEscwAP",
-  "restResourceSecure": "https://ecaas74.ng.bluemix.net/resources/datacaches/EzsLGyQDTwCz9ohzGMEscwAP",
-  "gridName": "EzsLGyQDTwCz9ohzGMEscwAP",
-  "username": "AFpC2U8ORx65dzvMSaXFAgBI",
-  "password": "uxpQvHJ6SBFkkzdr2utBVwWA"
-};
+// var credentials = {
+//   "catalogEndPoint": "23.246.238.90:2809,23.246.238.91:2809",
+//   "restResource": "http://23.246.238.90/resources/datacaches/EzsLGyQDTwCz9ohzGMEscwAP",
+//   "restResourceSecure": "https://ecaas74.ng.bluemix.net/resources/datacaches/EzsLGyQDTwCz9ohzGMEscwAP",
+//   "gridName": "EzsLGyQDTwCz9ohzGMEscwAP",
+//   "username": "AFpC2U8ORx65dzvMSaXFAgBI",
+//   "password": "uxpQvHJ6SBFkkzdr2utBVwWA"
+// };
 
-var store = new DataCacheStore({
-  // required parameters when no custom client provided or no ENV credentials are set 
-  restResource: 'http://dcsdomain.bluemix.net/resources/datacaches/{gridName}',
-  restResourceSecure: 'https://dcsdomain.bluemix.net/resources/datacaches/{gridName}',
-  gridName: credentials.gridName,
-  username: credentials.username,
-  password: credentials.password,
-  //optional
-  contentType: 'other'
+// var store = new DataCacheStore({
+//   // required parameters when no custom client provided or no ENV credentials are set 
+//   restResource: 'http://dcsdomain.bluemix.net/resources/datacaches/{gridName}',
+//   restResourceSecure: 'https://dcsdomain.bluemix.net/resources/datacaches/{gridName}',
+//   gridName: credentials.gridName,
+//   username: credentials.username,
+//   password: credentials.password,
+//   //optional
+//   contentType: 'other'
 
-}
-);
+// }
+// );
 var port = (process.env.VCAP_APP_PORT || 3000);
 var host = (process.env.VCAP_APP_HOST || 'localhost');
 
@@ -66,16 +67,21 @@ try {
 } catch (err) {
   // log fallback on memory store for no DataCache service linked to app 
 }
-var session = require('express-session');
-var DataCacheStore = require('connect-datacache')(session)
-app.use(session({
-  store: dcStore,
-  secret: 'chatroom',
-  cookie: { maxAge: 60000 },
-  resave: false,
-  saveUninitialized: false
-}))
 
+// app.use(session({
+//   store: dcStore,
+//   secret: 'chatroom',
+//   cookie: { maxAge: 60000 },
+//   resave: false,
+//   saveUninitialized: false
+// }))
+app.use(session({
+  name: 'session',
+  keys: ['key1', 'key2'],
+ secret:'chatroom',
+ maxAge: '60000'
+  // Cookie Options
+}))
 
 // internal modules ======================================================================
 require(__dirname + '/routes.js')(app);
@@ -154,9 +160,9 @@ http.listen(port, host,function (req, res) {
 });
 
 // function sessionCleanup() {
-//     sessionStore.all(function(err, sessions) {
+//     dcStore.all(function(err, sessions) {
 //         for (var i = 0; i < sessions.length; i++) {
-//             sessionStore.get(sessions[i], function() {} );
+//             dcStore.get(sessions[i], function() {} );
 //         }
 //     });
 // }

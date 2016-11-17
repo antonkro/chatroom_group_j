@@ -4,6 +4,7 @@
   "description": "chat room basic structure",
   "dependencies": {
     "connect-datacache": "^1.1.0",
+    "cookie-session": "^2.0.0-alpha.2",
     "crypto": "0.0.3",
     "dateformat": "^1.0.12",
     "ejs": "^2.5.2",
@@ -19,7 +20,7 @@
     "utils": "^0.3.1"
   },
   "engines": {
-  "node": "7.1.0",
-  "npm":"3.10.9"
-}
+    "node": "7.1.0",
+    "npm": "3.10.9"
+  }
 }
