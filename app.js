@@ -7,7 +7,7 @@ var app = express();
 //    cert : fs.readFileSync('server.crt')
 // };
 var https = require('http').Server(app);
-
+var cfenv = require('cfenv');
 var io = require('socket.io')(https);
 // var session = require('express-session');
 // var DataCacheStore = require('connect-datacache')(session)
@@ -44,6 +44,7 @@ var mkdirp = require('mkdirp');
 // );
 var port = (process.env.VCAP_APP_PORT || 3000);
 var host = (process.env.VCAP_APP_HOST || 'localhost');
+var appEnv = cfenv.getAppEnv();
 
 app.use(express.static(path.join(__dirname, 'uploads')));
 app.use(express.static(__dirname + '/views/ressources'));
@@ -165,10 +166,10 @@ io.on('connection', function (socket) {
 
 
 // HTTP ======================================================================
-https.listen(port, host, function (req, res) {
-
+https.listen(appEnv.port,'0.0.0.0', function (req, res) {
+console.log("server starting on " + appEnv.url);
   //  setInterval(function() { sessionCleanup() }, 1000);
-  console.log('listening on *:'+host + port);
+  // console.log('listening on *:'+host + port);
 });
 
 // function sessionCleanup() {
