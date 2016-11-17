@@ -80,7 +80,7 @@ io.on('connection', function (socket) {
       var inner = socket.username + " at " + dateFormat(now) + ': ';
       // console.dir(ip.address());
       msg = appEnv.url + '/' + uploadname;
-      io.emit('upload', msg, inner);
+       io.sockets.in(socket.chatroom).emit('upload', msg, inner);
       uploadname = "";
     }
   });
