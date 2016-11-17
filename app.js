@@ -1,8 +1,14 @@
 
 var express = require('express');
+var fs = require('fs');
 var app = express();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
+var options = {
+   key  : fs.readFileSync('server.key'),
+   cert : fs.readFileSync('server.crt')
+};
+var https = require('https').Server(options,app);
+
+var io = require('socket.io')(https);
 // var session = require('express-session');
 // var DataCacheStore = require('connect-datacache')(session)
 var session = require('cookie-session')
@@ -159,7 +165,7 @@ io.on('connection', function (socket) {
 
 
 // HTTP ======================================================================
-http.listen(port, host, function (req, res) {
+https.listen(port, host, function (req, res) {
 
   //  setInterval(function() { sessionCleanup() }, 1000);
   console.log('listening on *:' + port);

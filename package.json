@@ -12,6 +12,8 @@
     "express": "^4.10.2",
     "express-session": "^1.14.1",
     "formidable": "^1.0.17",
+    "fs": "0.0.1-security",
+    "https": "^1.0.0",
     "ip": "^1.1.4",
     "multer": "^1.2.0",
     "nedb": "^1.8.0",
