@@ -9,10 +9,8 @@ var app = express();
 var https = require('http').Server(app);
 var cfenv = require('cfenv');
 var io = require('socket.io')(https);
-// var session = require('express-session');
-// var DataCacheStore = require('connect-datacache')(session)
 var session = require('cookie-session')
-// var ip = require("ip");
+
 
 var dateFormat = require('dateformat');
 var now = new Date();
@@ -21,29 +19,8 @@ var uploadname = new String();
 var multer = require('multer');
 var mkdirp = require('mkdirp');
 
-// var credentials = {
-//   "catalogEndPoint": "23.246.238.90:2809,23.246.238.91:2809",
-//   "restResource": "http://23.246.238.90/resources/datacaches/EzsLGyQDTwCz9ohzGMEscwAP",
-//   "restResourceSecure": "https://ecaas74.ng.bluemix.net/resources/datacaches/EzsLGyQDTwCz9ohzGMEscwAP",
-//   "gridName": "EzsLGyQDTwCz9ohzGMEscwAP",
-//   "username": "AFpC2U8ORx65dzvMSaXFAgBI",
-//   "password": "uxpQvHJ6SBFkkzdr2utBVwWA"
-// };
-
-// var store = new DataCacheStore({
-//   // required parameters when no custom client provided or no ENV credentials are set 
-//   restResource: 'http://dcsdomain.bluemix.net/resources/datacaches/{gridName}',
-//   restResourceSecure: 'https://dcsdomain.bluemix.net/resources/datacaches/{gridName}',
-//   gridName: credentials.gridName,
-//   username: credentials.username,
-//   password: credentials.password,
-//   //optional
-//   contentType: 'other'
-
-// }
-// );
-var port = (process.env.VCAP_APP_PORT || 3000);
-var host = (process.env.VCAP_APP_HOST || 'localhost');
+// var port = (process.env.VCAP_APP_PORT || 3000);
+// var host = (process.env.VCAP_APP_HOST || 'localhost');
 var appEnv = cfenv.getAppEnv();
 
 app.use(express.static(path.join(__dirname, 'uploads')));
@@ -73,21 +50,6 @@ app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 
 // use middleware ======================================================================
-dcStore = null;
-try {
-  // by default is looking into bluemix cfenv services 
-  dcStore = new DataCacheStore(store);
-} catch (err) {
-  // log fallback on memory store for no DataCache service linked to app 
-}
-
-// app.use(session({
-//   store: dcStore,
-//   secret: 'chatroom',
-//   cookie: { maxAge: 60000 },
-//   resave: false,
-//   saveUninitialized: false
-// }))
 app.use(session({
   name: 'session',
   keys: ['key1', 'key2'],
@@ -110,8 +72,6 @@ io.on('connection', function (socket) {
         return res.end("Error uploading file.");
       }
       res.end("File is uploaded");
-
-
     });
   });
 
@@ -119,7 +79,7 @@ io.on('connection', function (socket) {
     if (uploadname != "") {
       var inner = socket.username + " at " + dateFormat(now) + ': ';
       // console.dir(ip.address());
-      msg = appEnv.url +'/' +uploadname;
+      msg = appEnv.url + '/' + uploadname;
       io.emit('upload', msg, inner);
       uploadname = "";
     }
@@ -145,7 +105,6 @@ io.on('connection', function (socket) {
       socket.emit('message', "Server: " + command[0] + " is not a command");
     } else {
       io.sockets.in(socket.chatroom).emit('message', socket.username + " at " + dateFormat(now) + ': ' + msg);
-      //uploadname = "";
     }
   });
 
@@ -166,16 +125,7 @@ io.on('connection', function (socket) {
 
 
 // HTTP ======================================================================
-https.listen(appEnv.port,'0.0.0.0', function (req, res) {
-console.log("server starting on " + appEnv.url);
-  //  setInterval(function() { sessionCleanup() }, 1000);
-  // console.log('listening on *:'+host + port);
+https.listen(appEnv.port, '0.0.0.0', function (req, res) {
+  console.log("server starting on " + appEnv.url);
 });
 
-// function sessionCleanup() {
-//     dcStore.all(function(err, sessions) {
-//         for (var i = 0; i < sessions.length; i++) {
-//             dcStore.get(sessions[i], function() {} );
-//         }
-//     });
-// }

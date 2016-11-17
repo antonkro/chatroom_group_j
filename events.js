@@ -60,12 +60,12 @@ module.exports = function (app) {
                                 var passwordDataCR = helpers.saltHashPassword(fields.crpassword, docCR.salt);
                                 if (passwordDataCR.passwordHash == docCR.pw) {
                                     // req.session.regenerate(function () {
-                                        req.session.user = fields.username;
-                                        req.session.chatroom = fields.chatroom;
-                                        res.redirect('/chatroom');
+                                    req.session.user = fields.username;
+                                    req.session.chatroom = fields.chatroom;
+                                    res.redirect('/chatroom');
                                     // });
-                                }else{
-                                    app.emit('renderLogin',req,res,' Chatroom password invalid!');
+                                } else {
+                                    app.emit('renderLogin', req, res, ' Chatroom password invalid!');
                                 }
                             }
                         });
@@ -73,7 +73,7 @@ module.exports = function (app) {
                 }
                 else {
                     // res.render('login', { message: ' Username or Password invalid!' });
-                    app.emit('renderLogin',req,res,' Username or Password invalid!');
+                    app.emit('renderLogin', req, res, ' Username or Password invalid!');
                 };
 
             });
@@ -81,7 +81,7 @@ module.exports = function (app) {
     });
 
     app.on('logout', function (req, res) {
-        req.session =null;
+        req.session = null;
         res.redirect('/');
     });
 
@@ -102,13 +102,13 @@ module.exports = function (app) {
 
                 }
                 // console.log('NEU##########################' + io.sockets.connected[socket.id])
-                active.update({ onlineUser: socket.username }, { $set: { sessionId: socket.id,chatroom:socket.chatroom } }, function (err, numReplaced) {
+                active.update({ onlineUser: socket.username }, { $set: { sessionId: socket.id, chatroom: socket.chatroom } }, function (err, numReplaced) {
 
                 });
                 // res.render('register', { message: ' User allready!' });
                 return;
             } else {
-                active.insert({ onlineUser: socket.username, sessionId: socket.id,chatroom:socket.chatroom }, function (err, newDoc) {
+                active.insert({ onlineUser: socket.username, sessionId: socket.id, chatroom: socket.chatroom }, function (err, newDoc) {
                 });
             }
         });
@@ -120,12 +120,12 @@ module.exports = function (app) {
         active.findOne({ onlineUser: rcv }, function (err, doc) {
             if (doc) {
                 var rcvsocket = io.sockets.connected[doc.sessionId]
-                if(rcvsocket.chatroom==socket.chatroom){
-                socket.emit('message', 'PRIVATE ' + socket.username + " at " + dateFormat(now) + ': ' + msg);
-                rcvsocket.emit('message', 'PRIVATE ' + socket.username + " at " + dateFormat(now) + ': ' + msg);
-                return;
+                if (rcvsocket.chatroom == socket.chatroom) {
+                    socket.emit('message', 'PRIVATE ' + socket.username + " at " + dateFormat(now) + ': ' + msg);
+                    rcvsocket.emit('message', 'PRIVATE ' + socket.username + " at " + dateFormat(now) + ': ' + msg);
+                    return;
                 }
-                else{
+                else {
                     socket.emit('message', 'User with name ' + rcv + ' was not found or is not online');
                 }
             }
@@ -146,8 +146,8 @@ module.exports = function (app) {
     });
 
     app.on('listAllUsers', function (socket) {
-        active.find({chatroom:socket.chatroom}, function (err, docs) {
-        //    console.log(docs)
+        active.find({ chatroom: socket.chatroom }, function (err, docs) {
+            //    console.log(docs)
             for (i in docs) {
                 socket.emit('message', docs[i].onlineUser);
             }

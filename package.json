@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "chat room basic structure",
   "dependencies": {
+    "cfenv": "^1.0.3",
     "connect-datacache": "^1.1.0",
     "cookie-session": "^2.0.0-alpha.2",
     "crypto": "0.0.3",
