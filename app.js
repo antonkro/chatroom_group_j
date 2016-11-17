@@ -1,6 +1,5 @@
 
 var express = require('express');
-var multer = require('multer');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
@@ -13,6 +12,8 @@ var dateFormat = require('dateformat');
 var now = new Date();
 var path = require('path');// To make the uploads folder accessible
 var uploadname = new String();
+var multer = require('multer');
+var mkdirp = require('mkdirp');
 
 // var credentials = {
 //   "catalogEndPoint": "23.246.238.90:2809,23.246.238.91:2809",
@@ -42,7 +43,11 @@ app.use(express.static(path.join(__dirname, 'uploads')));
 
 // Storage ======================================================================
 // upload format like name of file
+var uploadPath = './uploads';
+mkdirp.sync(uploadPath);
+
 var storage = multer.diskStorage({
+
   destination: function (req, file, callback) {
     callback(null, './uploads');
   },
@@ -78,8 +83,8 @@ try {
 app.use(session({
   name: 'session',
   keys: ['key1', 'key2'],
- secret:'chatroom',
- maxAge: '60000'
+  secret: 'chatroom',
+  maxAge: '60000'
   // Cookie Options
 }))
 
@@ -106,7 +111,7 @@ io.on('connection', function (socket) {
     if (uploadname != "") {
       var inner = socket.username + " at " + dateFormat(now) + ': ';
       // console.dir(ip.address());
-      msg = "http://" + (host+ ':3000/' + uploadname);
+      msg = "http://" + (host + ':3000/' + uploadname);
       io.emit('upload', msg, inner);
       uploadname = "";
     }
@@ -153,10 +158,10 @@ io.on('connection', function (socket) {
 
 
 // HTTP ======================================================================
-http.listen(port, host,function (req, res) {
+http.listen(port, host, function (req, res) {
 
   //  setInterval(function() { sessionCleanup() }, 1000);
-  console.log('listening on *:'+port);
+  console.log('listening on *:' + port);
 });
 
 // function sessionCleanup() {
