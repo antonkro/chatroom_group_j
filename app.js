@@ -112,7 +112,7 @@ io.on('connection', function (socket) {
     if (uploadname != "") {
       var inner = socket.username + " at " + dateFormat(now) + ': ';
       // console.dir(ip.address());
-      msg = "http://" + (host + ':3000/' + uploadname);
+      msg = "http://" + (host + ':' + port + '/' + uploadname);
       io.emit('upload', msg, inner);
       uploadname = "";
     }

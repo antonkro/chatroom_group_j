@@ -106,7 +106,7 @@
 
       $('#uploadForm').submit(function() {
         $("#status").empty().text("File is uploading...");
-        
+        document.getElementById("upload").disabled = true;
           $(this).ajaxSubmit({
             error: function(xhr) {
               status('Error: ' + xhr.status);
@@ -115,7 +115,7 @@
               // console.log(response)
               socket.emit('upload',$('#media').val());
                  $('#uploadForm')[0].reset();
-           
+                 document.getElementById("upload").disabled = false;
               
               $("#status").empty().text(response);
           // console.log('HIER->>>>>>>>>>>>>>>>'+ $('#media').val());
