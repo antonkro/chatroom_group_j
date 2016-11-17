@@ -3,8 +3,8 @@ var express = require('express');
 var fs = require('fs');
 var app = express();
 // var options = {
-  //  key  : fs.readFileSync('server.key'),
-  //  cert : fs.readFileSync('server.crt')
+//    key  : fs.readFileSync('server.key'),
+//    cert : fs.readFileSync('server.crt')
 // };
 var https = require('http').Server(app);
 
@@ -118,7 +118,7 @@ io.on('connection', function (socket) {
     if (uploadname != "") {
       var inner = socket.username + " at " + dateFormat(now) + ': ';
       // console.dir(ip.address());
-      msg = "http://" + (host + ':' + port + '/' + uploadname);
+      msg = "https://" + (host + ':' + port + '/' + uploadname);
       io.emit('upload', msg, inner);
       uploadname = "";
     }

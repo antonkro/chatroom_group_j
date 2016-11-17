@@ -1,4 +1,6 @@
-{"onlineUser":"123","sessionId":"rHedBWeXBs2Vto9RAAAA","chatroom":"chat2","_id":"1PhPL1STEcqjdndc"}
+{"onlineUser":"123","sessionId":"CteEpBirnbCChbnrAAAA","chatroom":"chat2","_id":"1PhPL1STEcqjdndc"}
 {"onlineUser":"test","sessionId":"HxWoL6LsS8Exah9oAAAB","chatroom":"chat2","_id":"q2fskdaWuiGKcuLj"}
 {"$$indexCreated":{"fieldName":"onlineUser","unique":true,"sparse":false}}
-{"onlineUser":"123","sessionId":"CteEpBirnbCChbnrAAAA","chatroom":"chat2","_id":"1PhPL1STEcqjdndc"}
+{"onlineUser":"123","sessionId":"ExznJqzFohQGzuqIAAAA","chatroom":"chat2","_id":"1PhPL1STEcqjdndc"}
+{"onlineUser":"123","sessionId":"PYYniw7hhRk6olWCAAAB","chatroom":"chat2","_id":"1PhPL1STEcqjdndc"}
+{"$$deleted":true,"_id":"1PhPL1STEcqjdndc"}
