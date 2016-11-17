@@ -81,8 +81,7 @@ module.exports = function (app) {
     });
 
     app.on('logout', function (req, res) {
-        req.session.destroy(function (err) {
-        })
+        req.session =null;
         res.redirect('/');
     });
 
