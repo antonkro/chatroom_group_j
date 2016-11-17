@@ -168,7 +168,7 @@ io.on('connection', function (socket) {
 https.listen(port, host, function (req, res) {
 
   //  setInterval(function() { sessionCleanup() }, 1000);
-  console.log('listening on *:' + port);
+  console.log('listening on *:'+host + port);
 });
 
 // function sessionCleanup() {
