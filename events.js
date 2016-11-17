@@ -209,6 +209,10 @@ module.exports = function (app) {
         });
 
     });
+    app.on('cleanup', function(){
+    active.remove({}, { multi: true }, function (err, numRemoved) {
+});
+    });
 }
 
 

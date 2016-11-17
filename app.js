@@ -126,6 +126,7 @@ io.on('connection', function (socket) {
 
 // HTTP ======================================================================
 https.listen(appEnv.port, '0.0.0.0', function (req, res) {
-  console.log("server starting on " + appEnv.url);
+  app.emit('cleanup');
+  console.log("app starting on " + appEnv.url);
 });
 
