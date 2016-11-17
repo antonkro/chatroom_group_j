@@ -43,7 +43,7 @@ var mkdirp = require('mkdirp');
 // }
 // );
 var port = (process.env.VCAP_APP_PORT || 3000);
-var host ="https://hsrt-chatroom-group-j.mybluemix.net";
+var host = (process.env.VCAP_APP_HOST || 'localhost');
 
 app.use(express.static(path.join(__dirname, 'uploads')));
 app.use(express.static(__dirname + '/views/ressources'));
@@ -118,7 +118,7 @@ io.on('connection', function (socket) {
     if (uploadname != "") {
       var inner = socket.username + " at " + dateFormat(now) + ': ';
       // console.dir(ip.address());
-      msg = "https://" + (host + ':' + port + '/' + uploadname);
+      msg = host + ':' + port + '/' + uploadname;
       io.emit('upload', msg, inner);
       uploadname = "";
     }
