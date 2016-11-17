@@ -43,7 +43,7 @@ var mkdirp = require('mkdirp');
 // }
 // );
 var port = (process.env.VCAP_APP_PORT || 3000);
-var host = (process.env.VCAP_APP_HOST || 'localhost');
+var host ="https://hsrt-chatroom-group-j.mybluemix.net";
 
 app.use(express.static(path.join(__dirname, 'uploads')));
 app.use(express.static(__dirname + '/views/ressources'));
