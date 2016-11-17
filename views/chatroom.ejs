@@ -73,13 +73,48 @@
         $('#media').val('');
       });
       
-      socket.on('upload', function(msg,inner){
+    socket.on('upload', function(msg,inner){
         console.log(msg);    
         var list = document.createElement("li");
         var aTag = document.createElement('a');
         var diver= document.createElement('div');
         aTag.setAttribute('href',msg);
         aTag.setAttribute('target',"_blank");
+
+        var imgpat = (/\.(gif|jpg|jpeg|tiff|png)$/i);
+        var pdfpat = (/\.(pdf)$/i);
+        var txtpat = (/\.(txt|rtf)$/i);
+        var audpat = (/\.(txt|rtf)$/i);
+
+        if(imgpat.test(msg)){
+          msg = "<img src='"+msg+"'style='max-width:400px;max-height: 400px;'>";
+        }
+        if(pdfpat.test(msg)){
+          msg = "<embed src='"+msg+"'style='width:100%;height:500px;'>";
+        }
+        if(txtpat.test(msg)){
+          msg = "<object data='"+msg+"' type='text/plain' width='500' style='height: 300px'><a href='"+msg+"'>"+msg+"</a></object>";
+        }
+        <!-- Audio -->
+        if(/\.(mp3)$/i.test(msg)){
+          msg = "<audio controls><source src='"+msg+"' type='audio/mpeg'>Your browser does not support the audio element.</audio>";
+        }
+        if(/\.(ogg)$/i.test(msg)){
+          msg = "<audio controls><source src='"+msg+"' type='audio/ogg'>Your browser does not support the audio element.</audio>";
+        }
+        <!-- Video -->
+        if(/\.(mp4|mpeg)$/i.test(msg)){
+          msg = "<video width='400px' height='100%' controls><source src='"+msg+"' type='video/mp4'>Your browser does not support the audio element.</video>";
+        }
+        if(/\.(ogg)$/i.test(msg)){
+          msg = "<video width='400px' height='100%' controls><source src='"+msg+"' type='video/ogg'>Your browser does not support the audio element.</video>";
+        }
+        if(/\.(webm)$/i.test(msg)){
+          msg = "<video width='400px' height='100%' controls><source src='"+msg+"' type='video/webm'>Your browser does not support the audio element.</video>";
+        }
+
+
+        
         aTag.innerHTML = msg;
         diver.textContent = inner;
         list.appendChild(diver);
@@ -90,7 +125,6 @@
       console.log(list);
          $('#messages').append(list)  ;
       });
-
       // <!-- Attempt to clear upload field after send -->
       // $("#media").replaceWith($("#media").val('').clone(true));
 
@@ -107,6 +141,7 @@
       $('#uploadForm').submit(function() {
         $("#status").empty().text("File is uploading...");
         document.getElementById("upload").disabled = true;
+        $("#upload").attr('upload', 'Upload...');
           $(this).ajaxSubmit({
             error: function(xhr) {
               status('Error: ' + xhr.status);
@@ -116,7 +151,7 @@
               socket.emit('upload',$('#media').val());
                  $('#uploadForm')[0].reset();
                  document.getElementById("upload").disabled = false;
-              
+              $("#upload").attr('upload', 'Upload');
               $("#status").empty().text(response);
           // console.log('HIER->>>>>>>>>>>>>>>>'+ $('#media').val());
               }
