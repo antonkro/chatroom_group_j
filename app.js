@@ -59,13 +59,16 @@ app.use(session({
 }))
 
 
-app.use(function (req,res,next){
-if(req.secure) next();
-else{
-  res.redirect(appEnv.url);
-}
+// app.use(function (req, res, next) {
+//   if (req.secure) { 
+//     console.log(req.secure);
+//   return  next();
+//    }
+//   else {
+//     return  res.redirect('https://' + req.headers.host + req.url);
+//   }
 
-});
+// });
 // internal modules ======================================================================
 require(__dirname + '/routes.js')(app);
 require(__dirname + '/events.js')(app);
@@ -88,7 +91,7 @@ io.on('connection', function (socket) {
       var inner = socket.username + " at " + dateFormat(now) + ': ';
       // console.dir(ip.address());
       msg = appEnv.url + '/' + uploadname;
-       io.sockets.in(socket.chatroom).emit('upload', msg, inner);
+      io.sockets.in(socket.chatroom).emit('upload', msg, inner);
       uploadname = "";
     }
   });
