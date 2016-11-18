@@ -2,11 +2,11 @@
 var express = require('express');
 var fs = require('fs');
 var app = express();
-// var options = {
-//    key  : fs.readFileSync('server.key'),
-//    cert : fs.readFileSync('server.crt')
-// };
-var https = require('http').Server(app);
+var options = {
+   key  : fs.readFileSync('server.key'),
+   cert : fs.readFileSync('server.crt')
+};
+var https = require('https').Server(options,app);
 var cfenv = require('cfenv');
 var io = require('socket.io')(https);
 var session = require('cookie-session')
