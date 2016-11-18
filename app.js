@@ -57,18 +57,16 @@ app.use(session({
   maxAge: '60000'
   // Cookie Options
 }))
+function requireHTTPS(req, res, next) {
+    if (!req.secure) {
+        //FYI this should work for local development as well
+        return res.redirect('https://' + req.get('host') + req.url);
+    }
+    next();
+}
 
+app.use(requireHTTPS);
 
-// app.use(function (req, res, next) {
-//   if (req.secure) { 
-//     console.log(req.secure);
-//   return  next();
-//    }
-//   else {
-//     return  res.redirect('https://' + req.headers.host + req.url);
-//   }
-
-// });
 // internal modules ======================================================================
 require(__dirname + '/routes.js')(app);
 require(__dirname + '/events.js')(app);
