@@ -7,11 +7,30 @@
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
 	<!-- load bootstrap css -->
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+
+	<script src="jquery-1.11.1.js"></script>
+	<script src="jquery.min.js"></script>
+	<script src="jquery.form.min.js"></script>
 	<!-- load fontawesome -->
 	<style>
 		body {
 			padding-top: 80px;
 		}
+
+	#video {
+    width: 200px;
+    height: 200px;
+    /*background-color: #666;*/
+}
+#canvas {
+    width: 200px;
+    height: 200px;
+}
+
+#profile{
+	  width: 200px;
+    height: 200px;
+}
 	</style>
 </head>
 
@@ -21,32 +40,106 @@
 		<div class="col-sm-6 col-sm-offset-3">
 
 			<h1><span class="fa fa-sign-in"></span> Registration</h1>
+			<table>
 
+				<tr>
+					<td>
+						<!--<img id="profile" src="default_profile.png">-->
+						<canvas id="canvas" width="200px" height="200px"></canvas>
+					</td>
 
+					<td><div id="container">
+						<video id="video"  autoplay></video>
+						</div>
+				</tr>
+				<tr>
+					<!--<td><button id="webcam_button" onClick="shot()"> Take a Photo-->
+					<td><button id="snap">Snap Photo</button>
+				<td><button id="upload_profile">upload a profile image	
+
+			</tr>
+			
+			</table>
 			<!-- LOGIN FORM -->
 			<form action="" method="post" enctype="multipart/form-data">
-			<fieldset>
-				<div class="form-group">
-					<label>Username</label>
-					<input type="text" class="form-control" name="username">
-				</div>
-				<div class="form-group">
-					<label>Password</label>
-					<input type="password" class="form-control" name="password">
-				</div>
+				<fieldset class="form-group">
+					<div>
+						<label>Profile Photo: </label><br>
+						<img id="profile" src="default_profile.png">
+					</div>
+					<div class="form-group">
+						<label>Username</label>
+						<input type="text" class="form-control" name="username">
+					</div>
+					<div class="form-group">
+						<label>Password</label>
+						<input type="password" class="form-control" name="password">
+					</div>
 
-				<button type="submit" class="btn btn-warning btn-lg">Register</button>
-			</fieldset>
-			<p style="color:red"><br><%= message%></p>
-			</form>
-			<hr>
+					<button type="submit" class="btn btn-warning btn-lg" id="btn_register">Register</button>
+						</fieldset>
+						<p style="color:red"><br>
+							<%= message%>
+						</p>
+						</form>
+						<hr>
 
-			<p>Already have an account? <a href="/login">Login</a></p>
-			<p>Or go <a href="/">home</a>.</p>
+						<p>Already have an account? <a href="/login">Login</a></p>
+						<p>Or go <a href="/">home</a>.</p>
 
 		</div>
 
 	</div>
 </body>
+<script>
+
+var video = document.getElementById('video');
+
+if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+        video.src = window.URL.createObjectURL(stream);
+        video.play();
+    });
+}
+
+var canvas = document.getElementById('canvas');
+var context = canvas.getContext('2d');
+var video = document.getElementById('video');
+
+// Trigger photo take
+document.getElementById("snap").addEventListener("click", function() {
+	context.drawImage(video, 0, 0, 200, 200);
+});
+
+// function shot(){
+// 	navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
+// 	var video = document.querySelector("#videoElement");
+
+// 	if( $('#webcam_button').text()=='Take a Photo') {
+// 		$('#webcam_button').text('shot');
+// 		$('#videoElement').show();
+
+		
+ 
+ 
+// if (navigator.getUserMedia) {       
+//     navigator.getUserMedia({video: true}, handleVideo, videoError);
+// }
+ 
+// function handleVideo(stream) {
+//     video.src = window.URL.createObjectURL(stream);
+// }
+ 
+// function videoError(e) {
+//     // do something	
+// }
+// 	}
+// 		else{
+// 			snapshot();
+//  $('#webcam_button').text('Take a Photo');
+//  $('#videoElement').hide();
+// 		}
+// }
+</script>
 
 </html>

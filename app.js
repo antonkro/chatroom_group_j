@@ -2,10 +2,10 @@
 var express = require('express');
 var fs = require('fs');
 var app = express();
-// var options = {
-//    key  : fs.readFileSync('server.key'),
-//    cert : fs.readFileSync('server.crt')
-// };
+var options = {
+   key  : fs.readFileSync('server.key'),
+   cert : fs.readFileSync('server.crt')
+};
 var https = require('http').Server(app);
 var cfenv = require('cfenv');
 var io = require('socket.io')(https);
@@ -44,8 +44,8 @@ var storage = multer.diskStorage({
 });
 var upload = multer({ storage: storage }).single('media');
 
-
 // configure app ======================================================================
+
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 
@@ -68,21 +68,21 @@ app.use(session({
 // app.use(requireHTTPS);
 
 // internal modules ======================================================================
-require(__dirname + '/routes.js')(app);
+require(__dirname + '/routes.js')(app,upload);
 require(__dirname + '/events.js')(app);
 
 
 // socket.io ======================================================================
 io.on('connection', function (socket) {
   // upload on post
-  app.post('/api/upload', function (req, res) {
-    upload(req, res, function (err) {
-      if (err) {
-        return res.end("Error uploading file.");
-      }
-      res.end("File is uploaded");
-    });
-  });
+  // app.post('/api/upload', function (req, res) {
+  //   upload(req, res, function (err) {
+  //     if (err) {
+  //       return res.end("Error uploading file.");
+  //     }
+  //     res.end("File is uploaded");
+  //   });
+  // });
 
   socket.on('upload', function (msg) {
     if (uploadname != "") {

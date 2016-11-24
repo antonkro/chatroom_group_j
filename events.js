@@ -179,7 +179,7 @@ module.exports = function (app) {
 
             chatrooms.findOne({ chatroom: fields.chatroom }, function (err, doc) {
                 if (doc) {
-                    res.render('register', { message: ' Chatroom with this name allready exists!' });
+                    res.render('createChatroom', { message: ' Chatroom with this name allready exists!' });
                     return;
                 } else {
                     chatrooms.insert(data, function (err, newDoc) {
@@ -209,6 +209,19 @@ module.exports = function (app) {
         });
 
     });
+ app.on('authAdmin', function(req,res){
+     var form = new formidable.IncomingForm();
+        form.parse(req, function (err, fields){
+           if( fields.password=="admin"){
+            req.session.admin=true;
+            res.redirect("/");
+           }else{
+               res.render('adminLogin', { message: 'admin password wrong!' });
+           }
+
+        });
+});
+
     app.on('cleanup', function(){
     active.remove({}, { multi: true }, function (err, numRemoved) {
 });

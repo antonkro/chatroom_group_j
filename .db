@@ -3,5 +3,6 @@
 {"username":"peter","salt":"800a41c09ceee2fb","pw":"757cb79598585d5bff1f86461368bfbe124ce387e75e114f8111baea4e2754846279a1918aed788c171baf5a9b979f990fd496493b506dfe8fc8a53bbb548e91","_id":"LJKxWbIQznpa65wO"}
 {"username":"123","salt":"efbabd6a8ed5f159","pw":"079477d0402f5a22ac790ab8b938b8d8c1081efc4b076220b5b3451cd276ee9a6a632bb1de9c148fea2ae154c244f6d5095553709038b3ea5734ddeb1a0ab938","_id":"NqbHCCORMSSxHc8D"}
 {"username":"herbert","salt":"a128e85c3119750b","pw":"2f9215b4d4804ced7ee05cb5921f1a246403465468b6007bc5d41d83a2c982edbb0a2ece2280fa1fb9fb12b48c56608e5d6aef9fce239636f4600a29e5ec9c71","_id":"OarJ0dfMmIG1xRNC"}
+{"salt":"4eff0b113fb5e949","pw":"88a3e8032e2747b84ffa05a360dca29f8a2504654c20afeed4d9baf6921e3dc744413e840da64eb300e7735136a692692c2bbd2f61f5c4b903c93d7266592213","_id":"RyM43C1me5NRotKy"}
 {"username":"321","salt":"4ead585f0492b949","pw":"a421743ba01d7ef55fc793ea01b42455ad3075e09b408b1f1a228d7dc1030d8a40c20ca22161c39a1a11471e1535182dc0a1fe0cf36219220d807f6f0c68d9ee","_id":"ZYQoHA9BNNJefAic"}
 {"$$indexCreated":{"fieldName":"username","unique":true,"sparse":false}}
