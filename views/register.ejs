@@ -11,63 +11,74 @@
 	<script src="jquery-1.11.1.js"></script>
 	<script src="jquery.min.js"></script>
 	<script src="jquery.form.min.js"></script>
+
+
 	<!-- load fontawesome -->
 	<style>
 		body {
 			padding-top: 80px;
 		}
-
-	#video {
-    width: 200px;
-    height: 200px;
-    /*background-color: #666;*/
-}
-#canvas {
-    width: 200px;
-    height: 200px;
-}
-
-#profile{
-	  width: 200px;
-    height: 200px;
-}
+		/*#video {
+			width: 400px;
+			height: 400px;
+		}
+		
+		#canvas {
+			width: 400px;
+			height: 400px;
+		}*/
+		
+		#profilepic {
+			width: 200px;
+			height: 200px;
+		}
 	</style>
 </head>
 
 <body>
 	<div class="container">
-
 		<div class="col-sm-6 col-sm-offset-3">
-
 			<h1><span class="fa fa-sign-in"></span> Registration</h1>
-			<table>
+			<div id="profile">
+				<label>Profile Photo: </label><br>
+				<img id="profilepic" src="default_profile.png">
 
-				<tr>
-					<td>
-						<!--<img id="profile" src="default_profile.png">-->
-						<canvas id="canvas" width="200px" height="200px"></canvas>
-					</td>
 
-					<td><div id="container">
-						<video id="video"  autoplay></video>
-						</div>
-				</tr>
-				<tr>
-					<!--<td><button id="webcam_button" onClick="shot()"> Take a Photo-->
-					<td><button id="snap">Snap Photo</button>
-				<td><button id="upload_profile">upload a profile image	
+			</div>
 
-			</tr>
-			
-			</table>
+
+			<div id=choose_container>
+				<button id=chs_webcam class="btn btn-default">Take a snap via Webcam</button>
+				<button id=chs_upload class="btn btn-default">Upload a File</button>
+			</div>
+			<div id=webcam_container>
+				<table>
+					<tr>
+						<td>
+							<canvas id="canvas" width="200" height="200"></canvas>
+							<td>
+								<video id="video" width="200" height="200" autoplay></video>
+					</tr>
+				</table>
+				<!--<td><button id="webcam_button" onClick="shot()"> Take a Photo-->
+				<td><button id="snap" class="btn btn-default">Snap Photo</button>
+					<button id="use" class="btn btn-default">Use this
+								<td><button id="returnFromWebcam"class="btn btn-default">Other Option
+			</div>
+
+			<div id=upload_container>
+				<input id="pictureInput"type="file"class="btn btn-default">
+				<button id="upload"class="btn btn-default">Upload
+			<button id="returnFromUpload"class="btn btn-default">Other Option
+			</div>
 			<!-- LOGIN FORM -->
 			<form action="" method="post" enctype="multipart/form-data">
 				<fieldset class="form-group">
 					<div>
-						<label>Profile Photo: </label><br>
-						<img id="profile" src="default_profile.png">
+					
 					</div>
 					<div class="form-group">
+						<p id=image><p>
 						<label>Username</label>
 						<input type="text" class="form-control" name="username">
 					</div>
@@ -77,69 +88,21 @@
 					</div>
 
 					<button type="submit" class="btn btn-warning btn-lg" id="btn_register">Register</button>
-						</fieldset>
-						<p style="color:red"><br>
-							<%= message%>
-						</p>
-						</form>
-						<hr>
+					</fieldset>
+					<p id="message"style="color:red"><br>
+						<%= message%>
+					</p>
+					</form>
 
-						<p>Already have an account? <a href="/login">Login</a></p>
-						<p>Or go <a href="/">home</a>.</p>
+					<hr>
+					<p>Already have an account? <a href="/login">Login</a></p>
+					<p>Or go <a href="/">home</a>.</p>
+
+			</div>
 
 		</div>
-
-	</div>
+		<script src="registerGUI.js"></script>
 </body>
-<script>
 
-var video = document.getElementById('video');
-
-if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-    navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
-        video.src = window.URL.createObjectURL(stream);
-        video.play();
-    });
-}
-
-var canvas = document.getElementById('canvas');
-var context = canvas.getContext('2d');
-var video = document.getElementById('video');
-
-// Trigger photo take
-document.getElementById("snap").addEventListener("click", function() {
-	context.drawImage(video, 0, 0, 200, 200);
-});
-
-// function shot(){
-// 	navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
-// 	var video = document.querySelector("#videoElement");
-
-// 	if( $('#webcam_button').text()=='Take a Photo') {
-// 		$('#webcam_button').text('shot');
-// 		$('#videoElement').show();
-
-		
- 
- 
-// if (navigator.getUserMedia) {       
-//     navigator.getUserMedia({video: true}, handleVideo, videoError);
-// }
- 
-// function handleVideo(stream) {
-//     video.src = window.URL.createObjectURL(stream);
-// }
- 
-// function videoError(e) {
-//     // do something	
-// }
-// 	}
-// 		else{
-// 			snapshot();
-//  $('#webcam_button').text('Take a Photo');
-//  $('#videoElement').hide();
-// 		}
-// }
-</script>
 
 </html>
