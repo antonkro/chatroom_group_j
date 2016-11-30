@@ -221,7 +221,9 @@ module.exports = function (app) {
 
         });
 });
-
+    app.on('test',function(){
+helpers.recognizeFace();
+    });
     app.on('cleanup', function(){
     active.remove({}, { multi: true }, function (err, numRemoved) {
 });
