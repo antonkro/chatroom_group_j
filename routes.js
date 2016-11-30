@@ -1,4 +1,4 @@
-module.exports = function(app,upload) {
+module.exports = function(app,upload,appEnv) {
     var helpers = require(__dirname + '/helpers');
 
     // HTTP get ======================================================================   
@@ -55,8 +55,9 @@ module.exports = function(app,upload) {
       if (err) {
         return res.end("Error uploading file.");
       }
-      res.end("File is uploaded");
+      res.end(req.file.filename);    
     });
+    
   });
 }
 function requiredAuthentication(req, res, next) {

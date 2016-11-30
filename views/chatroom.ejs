@@ -150,7 +150,7 @@
               },
             success: function(response) {
               // console.log(response)
-              socket.emit('upload',$('#media').val());
+              socket.emit('upload');
                  $('#uploadForm')[0].reset();
                  document.getElementById("upload").disabled = false;
               $("#upload").attr('upload', 'Upload');

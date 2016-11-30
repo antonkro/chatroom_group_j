@@ -18,11 +18,12 @@ var path = require('path');// To make the uploads folder accessible
 var uploadname = new String();
 var multer = require('multer');
 var mkdirp = require('mkdirp');
-
 // var port = (process.env.VCAP_APP_PORT || 3000);
 // var host = (process.env.VCAP_APP_HOST || 'localhost');
 var appEnv = cfenv.getAppEnv();
 
+
+var config = 
 app.use(express.static(path.join(__dirname, 'uploads')));
 app.use(express.static(__dirname + '/views/ressources'));
 
@@ -68,7 +69,7 @@ app.use(session({
 // app.use(requireHTTPS);
 
 // internal modules ======================================================================
-require(__dirname + '/routes.js')(app,upload);
+require(__dirname + '/routes.js')(app,upload,appEnv);
 require(__dirname + '/events.js')(app);
 
 
@@ -84,7 +85,7 @@ io.on('connection', function (socket) {
   //   });
   // });
 
-  socket.on('upload', function (msg) {
+  socket.on('upload', function () {
     if (uploadname != "") {
       var inner = socket.username + " at " + dateFormat(now) + ': ';
       // console.dir(ip.address());

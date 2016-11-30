@@ -67,7 +67,11 @@
 			</div>
 
 			<div id=upload_container>
-				<input id="pictureInput"type="file"class="btn btn-default">
+			
+				<input value="Media" id="media" name = "media"type="file"class="btn btn-default">
+				<p id="upload-status"></p>
+  <p id="progress"></p>
+  		<pre id="result"></pre>
 				<button id="upload"class="btn btn-default">Upload
 			<button id="returnFromUpload"class="btn btn-default">Other Option
 			</div>
@@ -78,7 +82,7 @@
 					
 					</div>
 					<div class="form-group">
-						<p id=image><p>
+						<p id=image>url<p>
 						<label>Username</label>
 						<input type="text" class="form-control" name="username">
 					</div>
@@ -89,7 +93,7 @@
 
 					<button type="submit" class="btn btn-warning btn-lg" id="btn_register">Register</button>
 					</fieldset>
-					<p id="message"style="color:red"><br>
+					<p id="message" style="color:red"><br>
 						<%= message%>
 					</p>
 					</form>
