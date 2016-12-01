@@ -39,7 +39,7 @@ document.getElementById("use").addEventListener("click", function () {
     // var file = new File([array], "webcam.png", {type: "image/png", lastModified: Date.now()});
     // console.log(pictureInput.files[0]);
 
-    console.log(file);
+    // console.log(file);
     formData.append('media', file);
 
     sendXHRequest(formData, 'api/upload');
@@ -86,7 +86,7 @@ document.getElementById("returnFromUpload").addEventListener("click", function (
 
 document.getElementById("upload").addEventListener("click", function () {
     var formData = new FormData();
-    console.log(pictureInput.files[0]);
+    // console.log(pictureInput.files[0]);
     formData.append('media', pictureInput.files[0]);
     // console.log(formData.file);
     if ($('#media').val() != "") {
@@ -146,7 +146,7 @@ function onreadystatechangeHandler(evt) {
         var result = document.getElementById('result');
         result.innerHTML = '<p>The server uploaded  it on:</p><pre>' + evt.target.responseText + '</pre>';
         profilepic.src = evt.target.responseText;
-        $('#image').text(evt.target.responseText);
+        $('#image').val(evt.target.responseText);
     }
 }
 
@@ -156,5 +156,6 @@ function dataURItoFile(dataURI) {
     for (var i = 0; i < binary.length; i++) {
         array.push(binary.charCodeAt(i));
     }
-    return new Blob([new Uint8Array(array)], {type: 'image/png'});;
+    var file= new Blob([new Uint8Array(array)], {type: 'image/png'});;
+    return file;
 }

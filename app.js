@@ -138,6 +138,6 @@ io.on('connection', function (socket) {
 https.listen(appEnv.port, '0.0.0.0', function (req, res) {
   app.emit('cleanup');
   console.log("app starting on " + appEnv.url);
-  app.emit('test');
+  // app.emit('test');
 });
 

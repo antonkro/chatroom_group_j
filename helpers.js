@@ -43,10 +43,10 @@ module.exports = {
             passwordHash: passwordData.passwordHash
         };
     },
-    recognizeFace: function () {
-
+    recognizeFace: function (file) {
+        // console.log(__dirname +'/uploads/'+file);
         var params = {
-            images_file: fs.createReadStream(__dirname + '/uploads/dog.jpg'),
+            images_file: fs.createReadStream(__dirname + '/uploads/' + file),
             classifier_id: "faces"
         };
 
@@ -55,8 +55,17 @@ module.exports = {
                 if (err)
                     console.log(err);
                 else
-                    // var output =JSON.parse(response);
-                    console.log(response.images);
+                    
+                // while (response == "") {
+
+                //     setTimeout(function () {
+                //         console.log("wait");s
+                //     }, 2000);
+                // }
+                var output = JSON.stringify(response, null, 2);
+
+                return output.includes("face_location");
+                // includes("face")
             });
     }
 }

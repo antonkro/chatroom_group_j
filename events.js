@@ -39,9 +39,21 @@ module.exports = function (app) {
                     res.render('register', { message: ' User with this Username allready exists!' });
                     return;
                 } else {
-                    db.insert(data, function (err, newDoc) {
-                    });
-                    res.redirect('/');
+                    // console.log(helpers.recognizeFace(fields.image));
+                    // console.log(fields);
+                    // helpers.recognizeFace(function(err,fields.image){
+// CALLBACK
+                    // });
+                    // if () {
+
+                        db.insert(data, function (err, newDoc) {
+                        });
+                        res.redirect('/');
+                    // }
+                    // else{
+                        //  res.render('register', { message: ' Please use a Picture with a Face' });
+                    return;
+                    }
                 }
             });
         });
@@ -209,24 +221,24 @@ module.exports = function (app) {
         });
 
     });
- app.on('authAdmin', function(req,res){
-     var form = new formidable.IncomingForm();
-        form.parse(req, function (err, fields){
-           if( fields.password=="admin"){
-            req.session.admin=true;
-            res.redirect("/");
-           }else{
-               res.render('adminLogin', { message: 'admin password wrong!' });
-           }
+    app.on('authAdmin', function (req, res) {
+        var form = new formidable.IncomingForm();
+        form.parse(req, function (err, fields) {
+            if (fields.password == "admin") {
+                req.session.admin = true;
+                res.redirect("/");
+            } else {
+                res.render('adminLogin', { message: 'admin password wrong!' });
+            }
 
         });
-});
-    app.on('test',function(){
-helpers.recognizeFace();
     });
-    app.on('cleanup', function(){
-    active.remove({}, { multi: true }, function (err, numRemoved) {
-});
+    app.on('test', function () {
+        helpers.recognizeFace();
+    });
+    app.on('cleanup', function () {
+        active.remove({}, { multi: true }, function (err, numRemoved) {
+        });
     });
 }
 
