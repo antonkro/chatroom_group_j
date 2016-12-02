@@ -1,6 +1,7 @@
 $('#webcam_container').hide();
 $('#upload_container').hide();
 $('#image').hide();
+$('#use').hide();
 
 var localStream;
 var video = document.getElementById('video');
@@ -50,7 +51,7 @@ document.getElementById("use").addEventListener("click", function () {
         track.stop();
     });
 
-
+$('#image').val($('#image').val()+'.png');
 
 
 });

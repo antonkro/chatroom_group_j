@@ -1,5 +1,6 @@
 {"username":"test","salt":"abfba50c2f70c289","pw":"c9aa6bbc23b3d2953e7f29fa948ba6d34a972e82081715224399e39de29157ab5fe4c65b5eb0f9e89a40bfb9f7e8976f2e0681f033ea26cf4f82bc0d1ac6e54a","_id":"5x6ErjumTO0k5b5l"}
 {"username":"Hans","salt":"07330327e8b549f2","pw":"d33955566fd0fa9620ab8e1def5828a5bbeb2ac03e617079cc2db5afdfef7f5e4e29a8ff3cf8f69499b7c1702186267a2711eb10fe843b60cd20a70f2e3cfb32","_id":"6K9KKIcMOj1H53UG"}
+{"username":"222","salt":"b0a353484f77935f","pw":"7e95da63457d5a9fa66857134ae7754b21d1fa37744d2ed6a816e8591b2150f1aef5a3642467b0844855b825b9df8f2c1f8d01804d2b25157d6a0b11042069fb","profile":"1480661709654-IMG_20160824_174923.jpg","_id":"7mPmxMpbe3ouZD0U"}
 {"username":"peter","salt":"800a41c09ceee2fb","pw":"757cb79598585d5bff1f86461368bfbe124ce387e75e114f8111baea4e2754846279a1918aed788c171baf5a9b979f990fd496493b506dfe8fc8a53bbb548e91","_id":"LJKxWbIQznpa65wO"}
 {"username":"123","salt":"efbabd6a8ed5f159","pw":"079477d0402f5a22ac790ab8b938b8d8c1081efc4b076220b5b3451cd276ee9a6a632bb1de9c148fea2ae154c244f6d5095553709038b3ea5734ddeb1a0ab938","_id":"NqbHCCORMSSxHc8D"}
 {"username":"herbert","salt":"a128e85c3119750b","pw":"2f9215b4d4804ced7ee05cb5921f1a246403465468b6007bc5d41d83a2c982edbb0a2ece2280fa1fb9fb12b48c56608e5d6aef9fce239636f4600a29e5ec9c71","_id":"OarJ0dfMmIG1xRNC"}
@@ -7,4 +8,3 @@
 {"username":"321","salt":"4ead585f0492b949","pw":"a421743ba01d7ef55fc793ea01b42455ad3075e09b408b1f1a228d7dc1030d8a40c20ca22161c39a1a11471e1535182dc0a1fe0cf36219220d807f6f0c68d9ee","_id":"ZYQoHA9BNNJefAic"}
 {"username":"111","salt":"1d7926f69bdf8f94","pw":"d6b374e5e3cb97ede8ca068c299e882c7fcfd489ad4f900f8edaa4cb5ad1b51e3015766b1c61620fb2b4808e90bc0f270329497483ff38441b6961008645d82d","_id":"vtV6FCbCmyR0gY8T"}
 {"$$indexCreated":{"fieldName":"username","unique":true,"sparse":false}}
-{"username":"222","salt":"b0a353484f77935f","pw":"7e95da63457d5a9fa66857134ae7754b21d1fa37744d2ed6a816e8591b2150f1aef5a3642467b0844855b825b9df8f2c1f8d01804d2b25157d6a0b11042069fb","profile":"1480661709654-IMG_20160824_174923.jpg","_id":"7mPmxMpbe3ouZD0U"}
