@@ -18,11 +18,7 @@ module.exports = function (app) {
             var username = fields.username;
 
             var passwordData = helpers.saltHashPassword(password, 0);
-            var data = {
-                username: username,
-                salt: passwordData.salt,
-                pw: passwordData.passwordHash
-            }
+
 
             //make sure no empty entires will be made
             if (username == '' || password == '') {
@@ -42,18 +38,25 @@ module.exports = function (app) {
                     // console.log(helpers.recognizeFace(fields.image));
                     // console.log(fields);
                     // helpers.recognizeFace(function(err,fields.image){
-// CALLBACK
+                    // CALLBACK
                     // });
-                    // if () {
-
-                        db.insert(data, function (err, newDoc) {
-                        });
-                        res.redirect('/');
-                    // }
-                    // else{
-                        //  res.render('register', { message: ' Please use a Picture with a Face' });
-                    return;
-                    }
+                    helpers.recognizeFace(fields.image, function (result) {
+                        if (result) {
+                            var data = {
+                                username: username,
+                                salt: passwordData.salt,
+                                pw: passwordData.passwordHash,
+                                profile:fields.image
+                            }
+                            db.insert(data, function (err, newDoc) {
+                            });
+                            res.redirect('/');
+                            return;
+                        }
+                        else {
+                            res.render('register', { message: ' Please use a Picture with a Face' });
+                        }
+                    });
                 }
             });
         });

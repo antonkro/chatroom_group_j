@@ -43,7 +43,7 @@ module.exports = {
             passwordHash: passwordData.passwordHash
         };
     },
-    recognizeFace: function (file) {
+    recognizeFace: function (file, result) {
         // console.log(__dirname +'/uploads/'+file);
         var params = {
             images_file: fs.createReadStream(__dirname + '/uploads/' + file),
@@ -55,17 +55,8 @@ module.exports = {
                 if (err)
                     console.log(err);
                 else
-                    
-                // while (response == "") {
-
-                //     setTimeout(function () {
-                //         console.log("wait");s
-                //     }, 2000);
-                // }
                 var output = JSON.stringify(response, null, 2);
-
-                return output.includes("face_location");
-                // includes("face")
+                result(output.includes("face_location"));
             });
     }
 }
