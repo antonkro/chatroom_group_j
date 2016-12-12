@@ -10,9 +10,6 @@ var https = require('http').Server(app);
 var cfenv = require('cfenv');
 var io = require('socket.io')(https);
 
-var redis = require('socket.io-redis');
-var adapter =io.adapter(redis({ host: appEnv.url, port: appEnv.port }));
-var session = require('cookie-session')
 
 
 var dateFormat = require('dateformat');
@@ -25,11 +22,16 @@ var mkdirp = require('mkdirp');
 // var host = (process.env.VCAP_APP_HOST || 'localhost');
 var appEnv = cfenv.getAppEnv();
 
-var servers = [
-  {host: 'SERVER1-IP', port: 80},
-  {host: 'SERVER2-IP', port: 80},
-  {host: 'SERVER3-IP', port: 80}
-];
+// var redis = require('socket.io-redis');
+// io.adapter(redis({ host: appEnv.bind, port: appEnv.port }));
+
+
+var session = require('cookie-session')
+// var servers = [
+//   {host: 'SERVER1-IP', port: 80},
+//   {host: 'SERVER2-IP', port: 80},
+//   {host: 'SERVER3-IP', port: 80}
+// ];
 app.use(express.static(path.join(__dirname, 'uploads')));
 app.use(express.static(__dirname + '/views/ressources'));
 
