@@ -206,7 +206,6 @@ module.exports = function (app) {
 
     });
 
-
     app.on('renderLogin', function (req, res, msg) {
         var list = []
         chatrooms.find({}, function (err, docs) {
@@ -224,6 +223,7 @@ module.exports = function (app) {
         });
 
     });
+
     app.on('authAdmin', function (req, res) {
         var form = new formidable.IncomingForm();
         form.parse(req, function (err, fields) {
@@ -236,13 +236,16 @@ module.exports = function (app) {
 
         });
     });
+
     app.on('test', function () {
         helpers.recognizeFace();
     });
+
     app.on('cleanup', function () {
         active.remove({}, { multi: true }, function (err, numRemoved) {
         });
     });
+    
 }
 
 

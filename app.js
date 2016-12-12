@@ -9,6 +9,9 @@ var options = {
 var https = require('http').Server(app);
 var cfenv = require('cfenv');
 var io = require('socket.io')(https);
+
+var redis = require('socket.io-redis');
+var adapter =io.adapter(redis({ host: appEnv.url, port: appEnv.port }));
 var session = require('cookie-session')
 
 
@@ -22,8 +25,11 @@ var mkdirp = require('mkdirp');
 // var host = (process.env.VCAP_APP_HOST || 'localhost');
 var appEnv = cfenv.getAppEnv();
 
-
-var config = 
+var servers = [
+  {host: 'SERVER1-IP', port: 80},
+  {host: 'SERVER2-IP', port: 80},
+  {host: 'SERVER3-IP', port: 80}
+];
 app.use(express.static(path.join(__dirname, 'uploads')));
 app.use(express.static(__dirname + '/views/ressources'));
 
@@ -71,19 +77,11 @@ app.use(session({
 // internal modules ======================================================================
 require(__dirname + '/routes.js')(app,upload,appEnv);
 require(__dirname + '/events.js')(app);
+// require(__dirname + '/balancer.js')(app,io,servers);
 
 
 // socket.io ======================================================================
 io.on('connection', function (socket) {
-  // upload on post
-  // app.post('/api/upload', function (req, res) {
-  //   upload(req, res, function (err) {
-  //     if (err) {
-  //       return res.end("Error uploading file.");
-  //     }
-  //     res.end("File is uploaded");
-  //   });
-  // });
 
   socket.on('upload', function () {
     if (uploadname != "") {
