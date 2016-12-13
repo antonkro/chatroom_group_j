@@ -1,4 +1,0 @@
-{"chatroom":"chat2","salt":"6475e1313c181ecd","pw":"b3d35243d75592520deb6f21b2fe38b0256e2aac92511ec8a2d2736a73ab6f47d13f722bc5beb7c48e87272ae9d223c4c5626b28087b6e6155cce5c699dc3401","_id":"17PdtRaaqMaAczlD"}
-{"chatroom":"chat3","salt":"e7d967a88d4fa779","pw":"e537441715cb6f00b652d9fb9a344810e6726dffcb19511c4600ecca31f1d4a93d3b332c503c1e43bd98c7068d28ce488cf4461508db6b0642d243a964943de9","_id":"5O3zwE6QM3zmgtva"}
-{"chatroom":"chat1","salt":"8d7c7b7c29474543","pw":"292fed44eaeafec7f56202b3b2d085ebba62ee44cbb93a741a4caf174655c3cc7070755e6f2190512a2698957fafe81ca4e6bd8514c0bf50c0faf87545497553","_id":"Jau9sgGjplTc4mxN"}
-{"$$indexCreated":{"fieldName":"chatroom","unique":true,"sparse":false}}

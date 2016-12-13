@@ -1,42 +1,36 @@
 
 var express = require('express');
-var fs = require('fs');
 var app = express();
+var fs = require('fs');
 var options = {
-   key  : fs.readFileSync('server.key'),
-   cert : fs.readFileSync('server.crt')
+  key: fs.readFileSync('server.key'),
+  cert: fs.readFileSync('server.crt')
 };
 var https = require('http').Server(app);
-var cfenv = require('cfenv');
 var io = require('socket.io')(https);
 
+var session = require('cookie-session')
 
-
+// upload and filesystem ======================================================================
 var dateFormat = require('dateformat');
 var now = new Date();
 var path = require('path');// To make the uploads folder accessible
 var uploadname = new String();
 var multer = require('multer');
 var mkdirp = require('mkdirp');
-// var port = (process.env.VCAP_APP_PORT || 3000);
-// var host = (process.env.VCAP_APP_HOST || 'localhost');
+
+
+// app enviroment ======================================================================
+var cfenv = require('cfenv');
 var appEnv = cfenv.getAppEnv();
 
-// var redis = require('socket.io-redis');
-// io.adapter(redis({ host: appEnv.bind, port: appEnv.port }));
 
 
-var session = require('cookie-session')
-// var servers = [
-//   {host: 'SERVER1-IP', port: 80},
-//   {host: 'SERVER2-IP', port: 80},
-//   {host: 'SERVER3-IP', port: 80}
-// ];
+//ressources ======================================================================
 app.use(express.static(path.join(__dirname, 'uploads')));
 app.use(express.static(__dirname + '/views/ressources'));
 
 // Storage ======================================================================
-// upload format like name of file
 var uploadPath = './uploads';
 mkdirp.sync(uploadPath);
 
@@ -58,6 +52,11 @@ var upload = multer({ storage: storage }).single('media');
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 
+// scale out ======================================================================
+var cluster = require("cluster");
+var numCPUs = require("os").cpus().length;
+
+
 // use middleware ======================================================================
 app.use(session({
   name: 'session',
@@ -66,6 +65,8 @@ app.use(session({
   maxAge: '60000'
   // Cookie Options
 }))
+
+// https redirect ======================================================================
 // function requireHTTPS(req, res, next) {
 //     if (!req.secure) {
 //         //FYI this should work for local development as well
@@ -77,7 +78,7 @@ app.use(session({
 // app.use(requireHTTPS);
 
 // internal modules ======================================================================
-require(__dirname + '/routes.js')(app,upload,appEnv);
+require(__dirname + '/routes.js')(app, upload, appEnv);
 require(__dirname + '/events.js')(app);
 // require(__dirname + '/balancer.js')(app,io,servers);
 
@@ -135,9 +136,20 @@ io.on('connection', function (socket) {
 
 
 // HTTP ======================================================================
-https.listen(appEnv.port, '0.0.0.0', function (req, res) {
-  app.emit('cleanup');
-  console.log("app starting on " + appEnv.url);
-  // app.emit('test');
-});
+// if (cluster.isMaster) {
+//   for (var i = 0; i < numCPUs; i++) {
+//     cluster.fork();
+//   }
+//   cluster.on("exit", function (worker, code, signal) {
+//     cluster.fork();
+//   });
+
+
+// } else {
+  https.listen(appEnv.port, '0.0.0.0', function (req, res) {
+    // app.emit('cleanup');
+    console.log("app starting on " + appEnv.url);
+    // app.emit('test');
+  });
+// }
 
