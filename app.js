@@ -59,7 +59,7 @@ app.set('views', __dirname + '/views');
 // scale out ======================================================================
 // vertically
 var cluster = require("cluster");
-var num_processes = require("os").cpus().length;
+var num_processes = require("os").cpus().length/2;
 // horizontally
 var redis_port = 12889;
 var redis_host = "pub-redis-12889.dal-05.1.sl.garantiadata.com";
@@ -205,8 +205,8 @@ if (cluster.isMaster) {
 
 
   var app = new express();
-require(__dirname + '/routes.js')(app, upload, appEnv);
-require(__dirname + '/events.js')(app);
+  require(__dirname + '/routes.js')(app, upload, appEnv);
+  require(__dirname + '/events.js')(app);
   // Here you might use middleware, attach routes, etc.
 
   // Don't expose our internal server to the outside.
