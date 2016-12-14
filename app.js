@@ -132,10 +132,12 @@ io.sockets.on('connection', function (socket) {
     }
   });
 
-  socket.on('add user', function (username, chatroom) {
+  socket.on('add user', function (username, chatroom, err) {
+    if (err) console.err(err);
     socket.username = username;
     socket.chatroom = chatroom;
     socket.join(chatroom);
+    // console.log("debug: socket.on add user")
     app.emit('addUserToList', socket, io);
     io.sockets.in(socket.chatroom).emit('message', username + "  joined the Chat!!!");
   });
@@ -192,7 +194,7 @@ if (cluster.isMaster) {
     return Number(s) % len;
   };
   // Create the outside facing server listening on our port.
-  var server =  net.createServer({ pauseOnConnect: true }, function (connection) {
+  var server = net.createServer({ pauseOnConnect: true }, function (connection) {
     // We received a connection and need to pass it to the appropriate
     // worker. Get the worker for this connection's source IP and pass
     // it the connection.
@@ -203,7 +205,8 @@ if (cluster.isMaster) {
 
 
   var app = new express();
-
+require(__dirname + '/routes.js')(app, upload, appEnv);
+require(__dirname + '/events.js')(app);
   // Here you might use middleware, attach routes, etc.
 
   // Don't expose our internal server to the outside.

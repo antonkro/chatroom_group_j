@@ -250,6 +250,7 @@ module.exports = function (app) {
         //         });
         //     }
         // });
+        // console.log("events.js");
         var doc = null;
         var findDocument = function (callback) {
             db.find({ selector: { _id: generateID(db_keys.active, socket.username) } }, function (err, result) {

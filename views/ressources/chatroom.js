@@ -3,6 +3,7 @@ var obj = $('messages');
 obj.scrollTop = obj.scrollHeight;
 
 var socket = io();
+// console.log("DEBUG:chatroom.js")
 socket.emit('add user', user, chatroom);
 
 
@@ -18,7 +19,7 @@ socket.on('message', function (msg) {
 });
 
 socket.on('upload', function (msg, inner) {
-    console.log(msg);
+    // console.log(msg);
     var list = document.createElement("li");
     var aTag = document.createElement('a');
     var diver = document.createElement('div');
