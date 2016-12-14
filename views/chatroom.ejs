@@ -1,166 +1,42 @@
 <!doctype html>
 <html>
-  <head>
-    <title>Chatroom</title>
-    
-    <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      body { font: 13px Helvetica, Arial; height: 100%; width: 100%; margin: 0; }
-      form { padding: 3px; position: fixed; bottom: 0; width: 100%;height:140px;}
-      form input { border: 1; padding: 10px; width: 90%; margin-right: .5%; }
-       .form-group {margin-top:50px;margin-top:50px;}
-      .testdiv {margin-bottom:10px;padding-bottom:150px;}
-      html, body { height: 100%; width: 100%; margin: 0; }
 
-      #messages { list-style-type: none; margin: 0; padding: 0; overflow:auto; height:70%;}
-      #messages li { padding: 5px 10px; }
-      #messages li:nth-child(odd) { background: #eee; }
+<head>
+  <title>Chatroom</title>
 
-      #messageDiv {}
-      #messageDiv ul {height:80%;}
-      div.header{
-        background-color: lightblue;
-        padding: 5px 10px; 
-      }
-    </style>
-    <script src="socket.io-1.2.0.js"></script>
-    <script src="jquery-1.11.1.js"></script>
-    <script src="jquery.min.js"></script>
-    <script src="jquery.form.min.js"></script>
-     <link rel="stylesheet" href="bootstrap.min.css">
+  <script src="socket.io-1.2.0.js"></script>
+  <script src="jquery-1.11.1.js"></script>
+  <script src="jquery.min.js"></script>
+  <script src="jquery.form.min.js"></script>
+  <link rel="stylesheet" href="chatroom.css" />
+  <link rel="stylesheet" href="bootstrap.min.css">
 
-  </head>
-   <body>
-     <div class="header">
-     <p id="user"><br>Logged in as: <b><%= user%></b></p>
-     <p id="chatroom"><br>Chatroom: <b><%= chatroom%></b></p>
+</head>
+
+<script>
+// pre vars
+var user = "<%= user%>";
+var chatroom ="<%= chatroom%>";
+</script>
+
+<body>
+  <div class="header">
+    <p id="user"><br>Logged in as: <b><%= user%></b></p>
+    <p id="chatroom"><br>Chatroom: <b><%= chatroom%></b></p>
     <a href='/logout'>Logout</a>
-    </div>
-    <div class="testdiv">
+  </div>
+  <div class="testdiv">
     <ul id="messages"></ul>
-    </div>
-    <form class="form-group" id="uploadForm" action="/api/upload" enctype=”multipart/form-data” method = "post">      
-      <input id="chatfield" autocomplete="off" />
-     
-   <input class="btn btn-default"type="submit" onclick="sendBtn()" value="Send" name="send" id="send"></input>
+  </div>
+  <form class="form-group" id="uploadForm">
+
+    <input id="chatfield" autocomplete="off" />
+    <input class="btn btn-default" type="submit" value="Send" name="send" id="send"></input>
     <input class="btn btn-default" type="submit" value="Upload" name="upload" id="upload"></input>
-    <input type="file" value="Media" id="media" name = "media"></input>
-    </form>
-    
-  
-    
-    
-    
-    <script>     
+    <input type="file" value="Media" id="media" name="media"></input>
+  </form>
 
-    <!-- autoscrooling to bottom-->
-    var obj = $('messages');
-    obj.scrollTop = obj.scrollHeight;
+  <script src="chatroom.js"></script>
+</body>
 
-      var socket = io();
-      socket.emit('add user',"<%= user%>","<%= chatroom%>");
-
-      function sendBtn() {
-        $('#media').val('');
-        socket.emit('message',$('#chatfield').val());
-      }
-
-      // $('form').submit(function(){
-      //   $('#chatfield').val(' ');
-      // });
-
-      socket.on('message', function(msg){
-        $('#messages').append($('<li>').text(msg));
-        $('#chatfield').val('');
-        $('#media').val('');
-      });
-      
-    socket.on('upload', function(msg,inner){
-        console.log(msg);    
-        var list = document.createElement("li");
-        var aTag = document.createElement('a');
-        var diver= document.createElement('div');
-        aTag.setAttribute('href',msg);
-        aTag.setAttribute('target',"_blank");
-
-        var imgpat = (/\.(gif|jpg|jpeg|tiff|png)$/i);
-        var pdfpat = (/\.(pdf)$/i);
-        var txtpat = (/\.(txt|rtf)$/i);
-        var audpat = (/\.(txt|rtf)$/i);
-
-        if(imgpat.test(msg)){
-          msg = "<img src='"+msg+"'style='max-width:400px;max-height: 400px;'>";
-        }
-        if(pdfpat.test(msg)){
-          msg = "<embed src='"+msg+"'style='width:100%;height:500px;'>";
-        }
-        if(txtpat.test(msg)){
-          msg = "<object data='"+msg+"' type='text/plain' width='500' style='height: 300px'><a href='"+msg+"'>"+msg+"</a></object>";
-        }
-        <!-- Audio -->
-        if(/\.(mp3)$/i.test(msg)){
-          msg = "<audio controls><source src='"+msg+"' type='audio/mpeg'>Your browser does not support the audio element.</audio>";
-        }
-        if(/\.(ogg)$/i.test(msg)){
-          msg = "<audio controls><source src='"+msg+"' type='audio/ogg'>Your browser does not support the audio element.</audio>";
-        }
-        <!-- Video -->
-        if(/\.(mp4|mpeg)$/i.test(msg)){
-          msg = "<video width='400px' height='100%' controls><source src='"+msg+"' type='video/mp4'>Your browser does not support the audio element.</video>";
-        }
-        if(/\.(ogg)$/i.test(msg)){
-          msg = "<video width='400px' height='100%' controls><source src='"+msg+"' type='video/ogg'>Your browser does not support the audio element.</video>";
-        }
-        if(/\.(webm)$/i.test(msg)){
-          msg = "<video width='400px' height='100%' controls><source src='"+msg+"' type='video/webm'>Your browser does not support the audio element.</video>";
-        }
-
-
-        
-        aTag.innerHTML = msg;
-        diver.textContent = inner;
-        list.appendChild(diver);
-        list.appendChild(aTag);
-      
-      // list.setAttribute("value",(inner));
-      console.log(aTag);   
-      console.log(list);
-         $('#messages').append(list)  ;
-      });
-      // <!-- Attempt to clear upload field after send -->
-      // $("#media").replaceWith($("#media").val('').clone(true));
-
-      // $(':file').submit(function(msg){
-      //      socket.emit('message','test');
-      //   $('#chatfield').val('');
-      //   return false;
-      // });
-
-
-    
-  $(document).ready(function() {
-
-      $('#uploadForm').submit(function() {
-        $("#status").empty().text("File is uploading...");
-        document.getElementById("upload").disabled = true;
-        $("#upload").attr('upload', 'Upload...');
-          $(this).ajaxSubmit({
-            error: function(xhr) {
-              status('Error: ' + xhr.status);
-              },
-            success: function(response) {
-              // console.log(response)
-              socket.emit('upload');
-                 $('#uploadForm')[0].reset();
-                 document.getElementById("upload").disabled = false;
-              $("#upload").attr('upload', 'Upload');
-              $("#status").empty().text(response);
-          // console.log('HIER->>>>>>>>>>>>>>>>'+ $('#media').val());
-              }
-          });
-        return false;
-      });    
-  });
-  </script>
-  </body>
 </html>

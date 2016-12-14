@@ -53,9 +53,10 @@ app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 
 // scale out ======================================================================
+// vertically
 var cluster = require("cluster");
 var numCPUs = require("os").cpus().length;
-
+// horizontally
 
 // use middleware ======================================================================
 app.use(session({

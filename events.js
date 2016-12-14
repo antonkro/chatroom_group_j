@@ -253,8 +253,9 @@ module.exports = function (app) {
         var doc = null;
         var findDocument = function (callback) {
             db.find({ selector: { _id: generateID(db_keys.active, socket.username) } }, function (err, result) {
-                if (err) return console.error(err);
+                // if (err) return console.error(err);
                 if (result.docs.length != 0) {
+                    // console.log("here");
                     doc = result.docs[0];
                     // db.get(generateID(db_keys.active, socket.username), function (err, data) {
                     //     doc = data;
@@ -263,31 +264,40 @@ module.exports = function (app) {
                         oldsocket.emit('message', "DISCONNECTED!!!");
                         oldsocket.disconnect();
                     }
-                    // callback(err);
+                   
                 }
+                 callback(err);
             });
+            
         };
-        var updateDocument = function (callback) {
-            doc.sessionId = socket.id;
-            doc.chatroom = socket.chatroom;
-            db.insert(doc, function (err, data) {
-                if (err) return console.error(err);
-                // doc._rev = data.rev
-                // callback(err, data);
-                return
-            });
-        };
-        async.series([findDocument, updateDocument]);
+        // var updateDocument = function (callback) {
+        //     doc.sessionId = socket.id;
+        //     doc.chatroom = socket.chatroom;
+        //     db.insert(doc, function (err, data) {
+        //         if (err) return console.error(err);
+        //         // doc._rev = data.rev
+        //         // callback(err, data);
+        //         return
+        //     });
+        // };
 
-        db.insert({
-            _id: generateID(db_keys.active, socket.username),
-            type: 'active',
-            onlineUser: socket.username,
-            sessionId: socket.id,
-            chatroom: socket.chatroom
-        }, function (err) {
-            if (err) return console.error(err);
-        });
+        var createDocument = function (callback) {
+            // console.log("here2");
+            db.insert({
+                _id: generateID(db_keys.active, socket.username),
+                type: 'active',
+                onlineUser: socket.username,
+                sessionId: socket.id,
+                chatroom: socket.chatroom
+            }, function (err) {
+              
+                 callback(err);
+            });
+
+            
+        }
+        // console.log("here3");
+        async.series([findDocument, createDocument]);
 
 
 
@@ -317,10 +327,10 @@ module.exports = function (app) {
         var findDocuments = function (callback) {
             db.find({ selector: { type: 'active', onlineUser: rcv } }, function (err, result) {
                 if (err) return console.error(err);
-               
+
                 if (result.docs.length == 1) {
                     var doc = result.docs[0];
-                     console.log(io.sockets.connected[doc.sessionId]);
+                    // console.log(io.sockets.connected[doc.sessionId]);
                     var rcvsocket = io.sockets.connected[doc.sessionId]
                     if (rcvsocket.chatroom == socket.chatroom) {
                         socket.emit('message', 'PRIVATE ' + socket.username + " at " + dateFormat(now) + ': ' + msg);
