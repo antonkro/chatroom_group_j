@@ -1,5 +1,4 @@
 
-
 var express = require('express');
 var app = express();
 var fs = require('fs');
@@ -7,11 +6,8 @@ var options = {
   key: fs.readFileSync('server.key'),
   cert: fs.readFileSync('server.crt')
 };
-var server = require('http').Server(app);
-var net = require('net');
-var io = require('socket.io')(server);
-// var socketio =require('socket.io');
-// var io=io=socketio.listen(app);
+var https = require('http').Server(app);
+var io = require('socket.io')(https);
 
 var session = require('cookie-session')
 
@@ -59,14 +55,8 @@ app.set('views', __dirname + '/views');
 // scale out ======================================================================
 // vertically
 var cluster = require("cluster");
-var num_processes = require("os").cpus().length;
+var numCPUs = require("os").cpus().length;
 // horizontally
-var redis_port = 12889;
-var redis_host = "pub-redis-12889.dal-05.1.sl.garantiadata.com";
-var redis = require('redis').createClient;
-var adapter = require('socket.io-redis');
-var pub = redis(redis_port, redis_host, { auth_pass: "gB4v1oWdzYh5ivfi" });
-var sub = redis(redis_port, redis_host, { return_buffers: true, auth_pass: "gB4v1oWdzYh5ivfi" });
 
 // use middleware ======================================================================
 app.use(session({
@@ -95,9 +85,7 @@ require(__dirname + '/events.js')(app);
 
 
 // socket.io ======================================================================
-io.sockets.on('connection', function (socket) {
-  // var sub = redis.createClient();
-  // sub.subscribe("messages");
+io.on('connection', function (socket) {
 
   socket.on('upload', function () {
     if (uploadname != "") {
@@ -141,8 +129,6 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('disconnect', function () {
-    // sub.unsubscribe("messages");
-    // sub.quit();
     app.emit('deleteUserFromList', socket);
   });
 
@@ -151,82 +137,20 @@ io.sockets.on('connection', function (socket) {
 
 
 // HTTP ======================================================================
-if (cluster.isMaster) {
-  // This stores our workers. We need to keep them to be able to reference
-  // them based on source IP address. It's also useful for auto-restart,
-  // for example.
-  var workers = [];
-
-  // Helper function for spawning worker at index 'i'.
-  var spawn = function (i) {
-    workers[i] = cluster.fork();
-
-    // Optional: Restart worker on exit
-    workers[i].on('exit', function (code, signal) {
-      console.log('respawning worker', i);
-      spawn(i);
-    });
-  };
-
-  // Spawn workers.
-  for (var i = 0; i < num_processes; i++) {
-    spawn(i);
-  }
-
-  // Helper function for getting a worker index based on IP address.
-  // This is a hot path so it should be really fast. The way it works
-  // is by converting the IP address to a number by removing non numeric
-  // characters, then compressing it to the number of slots we have.
-  //
-  // Compared against "real" hashing (from the sticky-session code) and
-  // "real" IP number conversion, this function is on par in terms of
-  // worker index distribution only much faster.
-  var worker_index = function (ip, len) {
-    var s = '';
-    for (var i = 0, _len = ip.length; i < _len; i++) {
-      if (!isNaN(ip[i])) {
-        s += ip[i];
-      }
-    }
-
-    return Number(s) % len;
-  };
-  // Create the outside facing server listening on our port.
-  var server =  net.createServer({ pauseOnConnect: true }, function (connection) {
-    // We received a connection and need to pass it to the appropriate
-    // worker. Get the worker for this connection's source IP and pass
-    // it the connection.
-    var worker = workers[worker_index(connection.remoteAddress, num_processes)];
-    worker.send('sticky-session:connection', connection);
-  }).listen(appEnv.port);
-} else {
+// if (cluster.isMaster) {
+//   for (var i = 0; i < numCPUs; i++) {
+//     cluster.fork();
+//   }
+//   cluster.on("exit", function (worker, code, signal) {
+//     cluster.fork();
+//   });
 
 
-  var app = new express();
-
-  // Here you might use middleware, attach routes, etc.
-
-  // Don't expose our internal server to the outside.
-  server.listen(0, '0.0.0.0', function (req, res) {
-    console.log("child starting on " + appEnv.url);
+// } else {
+  https.listen(appEnv.port, '0.0.0.0', function (req, res) {
+    // app.emit('cleanup');
+    console.log("app starting on " + appEnv.url);
+    // app.emit('test');
   });
-  io.adapter(adapter({ pubClient: pub, subClient: sub }));
-  process.on('message', function (message, connection) {
-    if (message !== 'sticky-session:connection') {
-      return;
-    }
-
-    // Emulate a connection event on the server by emitting the
-    // event with the connection the master sent us.
-    server.emit('connection', connection);
-
-    connection.resume();
-  });
-  // server.listen(appEnv.port, '0.0.0.0', function (req, res) {
-  //   // app.emit('cleanup');
-
-  //   console.log("app starting on " + appEnv.url);
-  //   // app.emit('test');
-  // });
-}
+// }
 
