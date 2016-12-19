@@ -256,20 +256,20 @@ module.exports = function (app) {
             db.find({ selector: { _id: generateID(db_keys.active, socket.username) } }, function (err, result) {
                 // if (err) return console.error(err);
                 if (result.docs.length != 0) {
-                    // console.log("here");
                     doc = result.docs[0];
-                    // db.get(generateID(db_keys.active, socket.username), function (err, data) {
-                    //     doc = data;
+                    db.destroy(doc._id, doc._rev, function (err, data) {
+                        if (err) return callback(err);
+                    });
                     if (io.sockets.connected[doc.sessionId]) {
                         var oldsocket = io.sockets.connected[doc.sessionId];
                         oldsocket.emit('message', "DISCONNECTED!!!");
                         oldsocket.disconnect();
                     }
-                   
+
                 }
-                 callback(err);
+                callback(err);
             });
-            
+
         };
         // var updateDocument = function (callback) {
         //     doc.sessionId = socket.id;
@@ -291,11 +291,11 @@ module.exports = function (app) {
                 sessionId: socket.id,
                 chatroom: socket.chatroom
             }, function (err) {
-              
-                 callback(err);
+
+                callback(err);
             });
 
-            
+
         }
         // console.log("here3");
         async.series([findDocument, createDocument]);

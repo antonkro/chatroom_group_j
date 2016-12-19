@@ -155,9 +155,7 @@ io.sockets.on('connection', function (socket) {
 
 // HTTP ======================================================================
 if (cluster.isMaster) {
-  // This stores our workers. We need to keep them to be able to reference
-  // them based on source IP address. It's also useful for auto-restart,
-  // for example.
+  // reference to forkes (e.g restart a fork)
   var workers = [];
 
   // Helper function for spawning worker at index 'i'.
@@ -194,7 +192,7 @@ if (cluster.isMaster) {
 
     return Number(s) % len;
   };
-  // Create the outside facing server listening on our port.
+  // Create the outside  server listening on the one and only port
   var server = net.createServer({ pauseOnConnect: true }, function (connection) {
     // We received a connection and need to pass it to the appropriate
     // worker. Get the worker for this connection's source IP and pass
