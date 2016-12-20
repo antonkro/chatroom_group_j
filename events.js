@@ -298,7 +298,9 @@ module.exports = function (app) {
 
         }
         // console.log("here3");
-        async.series([findDocument, createDocument]);
+        async.series([findDocument, createDocument],function (err){
+            if(err)console.log(err);
+        });
 
 
 
