@@ -61,7 +61,7 @@ app.set('views', __dirname + '/views');
 var cluster = require("cluster");
 var num_processes = 2;
 // require("os").cpus().length/4;
-console.log(num_processes);
+// console.log(num_processes);
 // horizontally
 var redis_port = 12889;
 var redis_host = "pub-redis-12889.dal-05.1.sl.garantiadata.com";
