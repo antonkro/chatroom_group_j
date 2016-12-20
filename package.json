@@ -29,6 +29,7 @@
     "watson-developer-cloud": "^2.9.1"
   },
   "engines": {
-    "node": "7.1.0"
+    "node": "7.1.0",
+    "npm": "3.10.9"
   }
 }
