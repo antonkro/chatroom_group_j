@@ -59,7 +59,7 @@ app.set('views', __dirname + '/views');
 // scale out ======================================================================
 // vertically
 var cluster = require("cluster");
-var num_processes =require("os").cpus().length;
+var num_processes = require("os").cpus().length;
 console.log(num_processes);
 // horizontally
 var redis_port = 12889;
@@ -96,10 +96,26 @@ require(__dirname + '/events.js')(app);
 
 
 // socket.io ======================================================================
+sub.on("message", function (channel, data) {
+  data = JSON.parse(data);
+  console.log("Inside Redis_Sub: data from channel " + channel + ": " + (data.sendType));
+  if (parseInt("sendToSelf".localeCompare(data.sendType)) === 0) {
+    io.emit(data.method, data.data);
+  } else if (parseInt("sendToAllConnectedClients".localeCompare(data.sendType)) === 0) {
+    io.sockets.emit(data.method, data.data);
+  } else if (parseInt("sendToAllClientsInRoom".localeCompare(data.sendType)) === 0) {
+    io.sockets.in(channel).emit(data.method, data.data);
+  }
+
+});
+
+
 io.sockets.on('connection', function (socket) {
   // var sub = redis.createClient();
   // sub.subscribe("messages");
-
+  sub.on("subscribe", function (channel, count) {
+    console.log("Subscribed to " + channel + ". Now subscribed to " + count + " channel(s).");
+  });
   socket.on('upload', function () {
     if (uploadname != "") {
       var inner = socket.username + " at " + dateFormat(now) + ': ';
@@ -129,7 +145,14 @@ io.sockets.on('connection', function (socket) {
       }
       socket.emit('message', "Server: " + command[0] + " is not a command");
     } else {
-      io.sockets.in(socket.chatroom).emit('message', socket.username + " at " + dateFormat(now) + ': ' + msg);
+      // io.sockets.in(socket.chatroom).emit('message', socket.username + " at " + dateFormat(now) + ': ' + msg);
+      var reply = JSON.stringify({
+        method: 'message',
+        sendType: 'sendToAllClientsInRoom',
+        data: socket.username + " at " + dateFormat(now) + ': ' + msg
+      });
+      pub.publish(socket.chatroom, reply);
+
     }
   });
 
@@ -137,10 +160,11 @@ io.sockets.on('connection', function (socket) {
     if (err) console.err(err);
     socket.username = username;
     socket.chatroom = chatroom;
+    sub.subscribe(chatroom);
     socket.join(chatroom);
     // console.log("debug: socket.on add user")
     app.emit('addUserToList', socket, io);
-    io.sockets.in(socket.chatroom).emit('message', username + "  joined the Chat!!!");
+    socket.emit('message', username + "  joined the Chat!!!");
   });
 
   socket.on('disconnect', function () {
