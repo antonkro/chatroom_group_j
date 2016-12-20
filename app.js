@@ -59,7 +59,7 @@ app.set('views', __dirname + '/views');
 // scale out ======================================================================
 // vertically
 var cluster = require("cluster");
-var num_processes =require("os").cpus().length;
+var num_processes =require("os").cpus().length/2;
 console.log(num_processes);
 // horizontally
 var redis_port = 12889;
