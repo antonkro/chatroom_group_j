@@ -31,5 +31,8 @@
   "engines": {
     "node": "7.1.0",
     "npm": "3.10.9"
-  }
+  },
+   "scripts": {
+     "start": "node app.js"
+ }
 }
