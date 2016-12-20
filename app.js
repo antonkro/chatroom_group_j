@@ -59,8 +59,8 @@ app.set('views', __dirname + '/views');
 // scale out ======================================================================
 // vertically
 var cluster = require("cluster");
-var num_processes =require("os").cpus().length/4;
-// console.log(num_processes);
+var num_processes =require("os").cpus().length/2;
+console.log(num_processes);
 // horizontally
 var redis_port = 12889;
 var redis_host = "pub-redis-12889.dal-05.1.sl.garantiadata.com";
@@ -200,6 +200,7 @@ if (cluster.isMaster) {
     var worker = workers[worker_index(connection.remoteAddress, num_processes)];
     worker.send('sticky-session:connection', connection);
   }).listen(appEnv.port);
+  console.log("master starting on " + appEnv.url);
 } else {
 
 
