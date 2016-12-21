@@ -2,7 +2,7 @@
 var obj = $('messages');
 obj.scrollTop = obj.scrollHeight;
 
-var socket = io();
+var socket = io.connect(appUrl);
 // console.log("DEBUG:chatroom.js")
 socket.emit('add user', user, chatroom);
 
