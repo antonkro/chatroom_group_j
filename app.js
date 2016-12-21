@@ -62,13 +62,13 @@ var cluster = require("cluster");
 var num_processes = require("os").cpus().length;
 console.log(num_processes);
 // horizontally
-// var redis_port = 12889;
-// var redis_host = "pub-redis-12889.dal-05.1.sl.garantiadata.com";
-// var redis = require('redis').createClient;
-// var adapter = require('socket.io-redis');
-// var pub = redis(redis_port, redis_host, { auth_pass: "gB4v1oWdzYh5ivfi" });
-// var sub = redis(redis_port, redis_host, { return_buffers: true, auth_pass: "gB4v1oWdzYh5ivfi" });
-//   io.adapter(adapter({ pubClient: pub, subClient: sub }));
+var redis_port = 12889;
+var redis_host = "pub-redis-12889.dal-05.1.sl.garantiadata.com";
+var redis = require('redis').createClient;
+var adapter = require('socket.io-redis');
+var pub = redis(redis_port, redis_host, { auth_pass: "gB4v1oWdzYh5ivfi" });
+var sub = redis(redis_port, redis_host, { return_buffers: true, auth_pass: "gB4v1oWdzYh5ivfi" });
+
 
 var httpProxy = require('http-proxy');
 var proxy = httpProxy.createProxyServer(options); // See (†) 
@@ -175,82 +175,82 @@ io.sockets.on('connection', function (socket) {
 
 
 // HTTP ======================================================================
-// if (cluster.isMaster) {
-//   // reference to forkes (e.g restart a fork)
-//   var workers = [];
+if (cluster.isMaster) {
+  // reference to forkes (e.g restart a fork)
+  var workers = [];
 
-//   // Helper function for spawning worker at index 'i'.
-//   var spawn = function (i) {
-//     workers[i] = cluster.fork();
+  // Helper function for spawning worker at index 'i'.
+  var spawn = function (i) {
+    workers[i] = cluster.fork();
 
-//     // Optional: Restart worker on exit
-//     workers[i].on('exit', function (code, signal) {
-//       console.log('respawning worker', i);
-//       spawn(i);
-//     });
-//   };
+    // Optional: Restart worker on exit
+    workers[i].on('exit', function (code, signal) {
+      console.log('respawning worker', i);
+      spawn(i);
+    });
+  };
 
-//   // Spawn workers.
-//   for (var i = 0; i < num_processes; i++) {
-//     spawn(i);
-//   }
+  // Spawn workers.
+  for (var i = 0; i < num_processes; i++) {
+    spawn(i);
+  }
 
-//   // Helper function for getting a worker index based on IP address.
-//   // This is a hot path so it should be really fast. The way it works
-//   // is by converting the IP address to a number by removing non numeric
-//   // characters, then compressing it to the number of slots we have.
-//   //
-//   // Compared against "real" hashing (from the sticky-session code) and
-//   // "real" IP number conversion, this function is on par in terms of
-//   // worker index distribution only much faster.
-//   var worker_index = function (ip, len) {
-//     var s = '';
-//     for (var i = 0, _len = ip.length; i < _len; i++) {
-//       if (!isNaN(ip[i])) {
-//         s += ip[i];
-//       }
-//     }
+  // Helper function for getting a worker index based on IP address.
+  // This is a hot path so it should be really fast. The way it works
+  // is by converting the IP address to a number by removing non numeric
+  // characters, then compressing it to the number of slots we have.
+  //
+  // Compared against "real" hashing (from the sticky-session code) and
+  // "real" IP number conversion, this function is on par in terms of
+  // worker index distribution only much faster.
+  var worker_index = function (ip, len) {
+    var s = '';
+    for (var i = 0, _len = ip.length; i < _len; i++) {
+      if (!isNaN(ip[i])) {
+        s += ip[i];
+      }
+    }
 
-//     return Number(s) % len;
-//   };
-//   // Create the outside  server listening on the one and only port
-//   var server = net.createServer({ pauseOnConnect: true }, function (connection) {
-//     // We received a connection and need to pass it to the appropriate
-//     // worker. Get the worker for this connection's source IP and pass
-//     // it the connection.
-//     var worker = workers[worker_index(connection.remoteAddress, num_processes)];
-//     worker.send('sticky-session:connection', connection);
-//   }).listen(appEnv.port);
-//   console.log("master starting on " + appEnv.url);
-// } else {
+    return Number(s) % len;
+  };
+  // Create the outside  server listening on the one and only port
+  var server = net.createServer({ pauseOnConnect: true }, function (connection) {
+    // We received a connection and need to pass it to the appropriate
+    // worker. Get the worker for this connection's source IP and pass
+    // it the connection.
+    var worker = workers[worker_index(connection.remoteAddress, num_processes)];
+    worker.send('sticky-session:connection', connection);
+  }).listen(appEnv.port);
+  console.log("master starting on " + appEnv.url);
+} else {
 
 
-//   var app = new express();
-//   require(__dirname + '/routes.js')(app, upload, appEnv);
-//   require(__dirname + '/events.js')(app);
-//   // Here you might use middleware, attach routes, etc.
-
-//   // Don't expose our internal server to the outside.
-//   server.listen(0, '0.0.0.0', function (req, res) {
-//     console.log("child starting on " + appEnv.url);
-//   });
-
-//   process.on('message', function (message, connection) {
-//     if (message !== 'sticky-session:connection') {
-//       return;
-//     }
-
-//     // Emulate a connection event on the server by emitting the
-//     // event with the connection the master sent us.
-//     server.emit('connection', connection);
-
-//     connection.resume();
-//   });
-  server.listen(appEnv.port, '0.0.0.0', function (req, res) {
-    // app.emit('cleanup');
-
-    console.log("app starting on " + appEnv.url);
-    // app.emit('test');
+  var app = new express();
+  require(__dirname + '/routes.js')(app, upload, appEnv);
+  require(__dirname + '/events.js')(app);
+  // Here you might use middleware, attach routes, etc.
+  io.adapter(adapter({ pubClient: pub, subClient: sub }));
+  // Don't expose our internal server to the outside.
+  server.listen(0, '0.0.0.0', function (req, res) {
+    console.log("child starting on " + appEnv.url);
   });
-// }
+
+  process.on('message', function (message, connection) {
+    if (message !== 'sticky-session:connection') {
+      return;
+    }
+
+    // Emulate a connection event on the server by emitting the
+    // event with the connection the master sent us.
+    server.emit('connection', connection);
+
+    connection.resume();
+  });
+  // server.listen(appEnv.port, '0.0.0.0', function (req, res) {
+  //   // app.emit('cleanup');
+
+  //   console.log("app starting on " + appEnv.url);
+  //   // app.emit('test');
+  // });
+}
 
