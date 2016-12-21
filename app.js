@@ -62,13 +62,13 @@ var cluster = require("cluster");
 var num_processes = require("os").cpus().length;
 console.log(num_processes);
 // horizontally
-// var redis_port = 12889;
-// var redis_host = "pub-redis-12889.dal-05.1.sl.garantiadata.com";
-// var redis = require('redis').createClient;
-// var adapter = require('socket.io-redis');
-// var pub = redis(redis_port, redis_host, { auth_pass: "gB4v1oWdzYh5ivfi" });
-// var sub = redis(redis_port, redis_host, { return_buffers: true, auth_pass: "gB4v1oWdzYh5ivfi" });
-//   io.adapter(adapter({ pubClient: pub, subClient: sub }));
+var redis_port = 12889;
+var redis_host = "pub-redis-12889.dal-05.1.sl.garantiadata.com";
+var redis = require('redis').createClient;
+var adapter = require('socket.io-redis');
+var pub = redis(redis_port, redis_host, { auth_pass: "gB4v1oWdzYh5ivfi" });
+var sub = redis(redis_port, redis_host, { return_buffers: true, auth_pass: "gB4v1oWdzYh5ivfi" });
+  io.adapter(adapter({ pubClient: pub, subClient: sub }));
 
 var httpProxy = require('http-proxy');
 var proxy = httpProxy.createProxyServer(options); // See (†) 
