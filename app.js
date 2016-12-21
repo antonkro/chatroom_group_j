@@ -157,7 +157,7 @@ io.sockets.on('connection', function (socket) {
     if (err) console.err(err);
     socket.username = username;
     socket.chatroom = chatroom;
-    sub.subscribe(chatroom);
+    // sub.subscribe(chatroom);
     socket.join(chatroom);
     app.emit('addUserToList', socket, io);
     // socket.emit('message', username + "  joined the Chat!!!");

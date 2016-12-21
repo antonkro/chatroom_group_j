@@ -2,7 +2,9 @@
 var obj = $('messages');
 obj.scrollTop = obj.scrollHeight;
 
-var socket = io.connect(appUrl);
+var socket = io.connect(appUrl, {
+    transports: ['websocket']
+});
 // console.log("DEBUG:chatroom.js")
 socket.emit('add user', user, chatroom);
 
@@ -116,7 +118,7 @@ $(document).ready(function () {
     document.getElementById("send").addEventListener("click", function (event) {
         $('#media').val('');
         socket.emit('message', $('#chatfield').val());
-         event.preventDefault();
+        event.preventDefault();
     });
 
 });
