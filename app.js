@@ -87,16 +87,16 @@ var cluster = require("cluster");
 var num_processes = require("os").cpus().length;
 console.log(num_processes);
 // horizontally
-var redis_port = 12889;
-var redis_host = "pub-redis-12889.dal-05.1.sl.garantiadata.com";
-var redis = require('redis').createClient;
-var adapter = require('socket.io-redis');
-var pub = redis(redis_port, redis_host, { auth_pass: "gB4v1oWdzYh5ivfi" });
-var sub = redis(redis_port, redis_host, { return_buffers: true, auth_pass: "gB4v1oWdzYh5ivfi" });
+// var redis_port = 12889;
+// var redis_host = "pub-redis-12889.dal-05.1.sl.garantiadata.com";
+// var redis = require('redis').createClient;
+// var adapter = require('socket.io-redis');
+// var pub = redis(redis_port, redis_host, { auth_pass: "gB4v1oWdzYh5ivfi" });
+// var sub = redis(redis_port, redis_host, { return_buffers: true, auth_pass: "gB4v1oWdzYh5ivfi" });
 
 
 var httpProxy = require('http-proxy');
-var proxy = httpProxy.createProxyServer(options); // See (†) 
+var proxy = httpProxy.createProxyServer(options);
 
 // use middleware ======================================================================
 app.use(session({
@@ -104,7 +104,7 @@ app.use(session({
   keys: ['key1', 'key2'],
   secret: 'chatroom',
   maxAge: '60000',
-  // secure: true
+  secure: true
   // Cookie Options
 }))
 
@@ -255,7 +255,7 @@ if (cluster.isMaster) {
   require(__dirname + '/routes.js')(app, upload, appEnv);
   require(__dirname + '/events.js')(app);
   // Here you might use middleware, attach routes, etc.
-  io.adapter(adapter({ pubClient: pub, subClient: sub }));
+  // io.adapter(adapter({ pubClient: pub, subClient: sub }));
   // Don't expose our internal server to the outside.
   server.listen(0, '0.0.0.0', function (req, res) {
     console.log("child starting on " + appEnv.url);
