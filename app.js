@@ -58,6 +58,20 @@ var upload = multer({ storage: storage }).single('media');
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 
+// redirect
+app.enable('trust proxy');
+if (!appEnv.url.includes("localhost")) {
+  app.use(function (req, res, next) {
+    if (req.secure) {
+      // request was via https, so do no special handling
+      next();
+    } else {
+      // request was via http, so redirect to https
+      res.redirect('https://' + req.headers.host + req.url);
+    }
+  });
+}
+
 // scale out ======================================================================
 // vertically
 var cluster = require("cluster");
@@ -81,7 +95,7 @@ app.use(session({
   keys: ['key1', 'key2'],
   secret: 'chatroom',
   maxAge: '60000',
-  secure:true
+  secure: true
   // Cookie Options
 }))
 
