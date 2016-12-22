@@ -13,17 +13,17 @@
 
 </head>
 
-<script>
-// pre vars
-var user = "<%= user%>";
-var chatroom ="<%= chatroom%>";
-var appUrl ="<%= appUrl%>"
-</script>
+<!--<script>
+// // pre vars
+// var user = "<%= user%>";
+// var chatroom ="<%= chatroom%>";
+// var appUrl ="<%= appUrl%>"
+</script>-->
 
 <body>
   <div class="header">
-    <p id="user"><br>Logged in as: <b><%= user%></b></p>
-    <p id="chatroom"><br>Chatroom: <b><%= chatroom%></b></p>
+    <p><br>Logged in as:<div id="user"> <b><%= user%></b></div></p>
+    <p><br>Chatroom: <div id="chatroom"><b><%= chatroom%></b></div></p>
     <a href='/logout'>Logout</a>
   </div>
   <div class="testdiv">

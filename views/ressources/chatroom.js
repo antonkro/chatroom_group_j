@@ -1,7 +1,10 @@
+var user =$('#user').val();
+var chatroom =$('#chatroom').val();
+
+
 
 var obj = $('messages');
 obj.scrollTop = obj.scrollHeight;
-console.log(appUrl);
 var socket = io.connect('', {
     transports: ['websocket']
 });
