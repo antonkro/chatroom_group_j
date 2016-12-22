@@ -3,11 +3,13 @@
 var express = require('express');
 var app = express();
 var fs = require('fs');
+
 var options = {
   key: fs.readFileSync('server.key'),
   cert: fs.readFileSync('server.crt')
 };
-var server = require('http').Server(app);
+var server = require('https').Server(options,app);
+
 var net = require('net');
 var io = require('socket.io')(server);
 // var socketio =require('socket.io');
@@ -78,7 +80,8 @@ app.use(session({
   name: 'session',
   keys: ['key1', 'key2'],
   secret: 'chatroom',
-  maxAge: '60000'
+  maxAge: '60000',
+  secure:true
   // Cookie Options
 }))
 

@@ -1,7 +1,7 @@
 
 var obj = $('messages');
 obj.scrollTop = obj.scrollHeight;
-
+console.log(appUrl);
 var socket = io.connect(appUrl, {
     transports: ['websocket']
 });
