@@ -1,5 +1,5 @@
-var user =$('#user').val();
-var chatroom =$('#chatroom').val();
+var user =$('#user').text();
+var chatroom =$('#chatroom').text();
 
 
 
