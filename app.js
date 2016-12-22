@@ -8,7 +8,7 @@ var options = {
   key: fs.readFileSync('server.key'),
   cert: fs.readFileSync('server.crt')
 };
-var server = require('https').Server(options,app);
+var server = require('http').Server(app);
 
 var net = require('net');
 var io = require('socket.io')(server);
