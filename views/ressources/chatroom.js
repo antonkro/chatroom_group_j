@@ -2,7 +2,7 @@
 var obj = $('messages');
 obj.scrollTop = obj.scrollHeight;
 console.log(appUrl);
-var socket = io.connect(appUrl, {
+var socket = io.connect('', {
     transports: ['websocket']
 });
 // console.log("DEBUG:chatroom.js")
