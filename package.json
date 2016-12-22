@@ -17,6 +17,7 @@
     "express-session": "^1.14.1",
     "formidable": "^1.0.17",
     "fs": "0.0.1-security",
+    "helmet": "^3.1.0",
     "http-proxy": "^1.16.2",
     "https": "^1.0.0",
     "ip": "^1.1.4",

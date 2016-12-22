@@ -71,6 +71,15 @@ if (!appEnv.url.includes("localhost")) {
     }
   });
 }
+// security enhancement
+var helmet = require('helmet');
+app.use(helmet());
+
+app.use(function(req, res, next) {
+    res.setHeader("Content-Security-Policy", "script-src 'self' https://apis.google.com");
+    return next();
+});
+
 
 // scale out ======================================================================
 // vertically
