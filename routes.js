@@ -26,10 +26,11 @@ module.exports = function(app,upload,appEnv) {
     });
 
     app.get('/chatroom', requiredAuthentication, function(req, res) {
+       console.log(appEnv);
         res.render('chatroom', {
             user: req.session.user,
             chatroom: req.session.chatroom,
-            appUrl:appEnv.host
+            appBind:appEnv.bind
 
         });
         // res.sendFile(__dirname + '/views/chatroom.html');

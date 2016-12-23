@@ -58,6 +58,8 @@ var upload = multer({ storage: storage }).single('media');
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 
+// security enhancement ======================================================================
+
 // redirect
 app.enable('trust proxy');
 if (!appEnv.url.includes("localhost")) {
@@ -71,7 +73,7 @@ if (!appEnv.url.includes("localhost")) {
     }
   });
 }
-// security enhancement
+// 
 var helmet = require('helmet');
 app.use(helmet());
 
