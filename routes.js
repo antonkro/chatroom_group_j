@@ -30,7 +30,7 @@ module.exports = function(app,upload,appEnv) {
         res.render('chatroom', {
             user: req.session.user,
             chatroom: req.session.chatroom,
-            appBind:appEnv.bind
+            instance_id:appEnv.instance_id
 
         });
         // res.sendFile(__dirname + '/views/chatroom.html');
