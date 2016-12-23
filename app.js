@@ -88,7 +88,7 @@ app.use(helmet());
 var cluster = require("cluster");
 var num_processes = require("os").cpus().length;
 console.log(num_processes);
-// horizontally
+// // horizontally
 var redis_port = 12889;
 var redis_host = "pub-redis-12889.dal-05.1.sl.garantiadata.com";
 var redis = require('redis').createClient;
@@ -106,7 +106,7 @@ app.use(session({
   keys: ['key1', 'key2'],
   secret: 'chatroom',
   maxAge: '60000',
-  // secure: true
+  secure: true
   // Cookie Options
 }))
 
